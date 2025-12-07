@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universidad Popular La Rioja - Inclusión y Equidad Educativa</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuente Inter (por defecto en Tailwind) -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fc; }
+        .hero-bg {
+            background-color: #1a237e;
+            background-image: linear-gradient(135deg, #1a237e 0%, #00bcd4 100%);
+        }
+        .vibrant-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        .vibrant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+                        0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO -->
+    <header class="hero-bg text-white py-16 md:py-24 rounded-b-3xl">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-4 animate-pulse-slow">
+                ¡La Educación Transforma!
+            </h1>
+            <p class="text-xl md:text-2xl font-light mb-8 max-w-3xl mx-auto">
+                Diagnóstico y Propuestas Innovadoras de la Universidad Popular La Rioja
+                para enfrentar la Deserción Escolar en Argentina.
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-6 mt-12">
+                <div class="bg-white text-indigo-800 p-6 rounded-xl shadow-2xl w-40 transform hover:scale-105 transition duration-300">
+                    <div class="text-4xl font-black" id="stat-secundario">0%</div>
+                    <div class="text-sm mt-1">Deserción Secundaria</div>
+                </div>
+                <div class="bg-white text-indigo-800 p-6 rounded-xl shadow-2xl w-40 transform hover:scale-105 transition duration-300">
+                    <div class="text-4xl font-black" id="stat-riojareforma">0</div>
+                    <div class="text-sm mt-1">Reforma Constitucional</div>
+                </div>
+                <div class="bg-white text-indigo-800 p-6 rounded-xl shadow-2xl w-40 transform hover:scale-105 transition duration-300">
+                    <div class="text-4xl font-black" id="stat-areas">0</div>
+                    <div class="text-sm mt-1">Áreas de Formación</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECCIÓN 1 -->
+    <section id="desafio" class="py-16 md:py-20 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center text-indigo-800 mb-12">El Desafío: Causas Estructurales</h2>
+            <p class="text-center text-gray-600 mb-10 max-w-4xl mx-auto">
+                La deserción escolar es un problema multifactorial...
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="vibrant-card bg-white p-8 rounded-xl border-t-4 border-cyan-500 shadow-lg">
+                    <div class="text-4xl text-cyan-600 mb-4">💰</div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Factores Socioeconómicos</h3>
+                    <p class="text-gray-600 text-sm">Pobreza, necesidad de trabajo infantil...</p>
+                </div>
+
+                <div class="vibrant-card bg-white p-8 rounded-xl border-t-4 border-fuchsia-500 shadow-lg">
+                    <div class="text-4xl text-fuchsia-600 mb-4">🧠</div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Fracaso y Sobreedad</h3>
+                    <p class="text-gray-600 text-sm">Desánimo generado por el fracaso académico...</p>
+                </div>
+
+                <div class="vibrant-card bg-white p-8 rounded-xl border-t-4 border-amber-500 shadow-lg">
+                    <div class="text-4xl text-amber-600 mb-4">🏭</div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Mercado Laboral Inaccesible</h3>
+                    <p class="text-gray-600 text-sm">La oferta educativa no se alinea...</p>
+                </div>
+            </div>
+
+            <div class="mt-12 p-8 bg-indigo-50 rounded-xl border-l-4 border-indigo-500">
+                <h4 class="text-2xl font-bold text-indigo-700 mb-4">Enfoque Regional: La Rioja</h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 text-sm md:text-base">
+                    <li><strong>Ruralidad y Distancias:</strong> ...</li>
+                    <li><strong>Inserción Laboral Temprana:</strong> ...</li>
+                    <li><strong>Oferta Limitada:</strong> ...</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2 -->
+    <section id="solucion" class="py-16 md:py-20 px-4 bg-gray-900 text-white">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold text-cyan-400 mb-4">9 Áreas de Transformación</h2>
+            <p class="text-lg font-light mb-12 text-gray-300 max-w-5xl mx-auto">
+                Aprovechando el marco de la Reforma Constitucional 2024...
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="areas-grid">
+                <!-- JS generará aquí -->
+            </div>
+
+            <button onclick="scrollToTop()" class="mt-12 bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105 shadow-xl">
+                Volver al Desafío
+            </button>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3 -->
+    <section id="perfil" class="py-16 md:py-20 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center text-indigo-800 mb-12">El Futuro: Perfil del Egresado</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-xl border border-gray-200 bg-white vibrant-card">
+                    <h3 class="text-xl font-bold text-teal-600 mb-2">1. Pensamiento Crítico</h3>
+                    <p class="text-gray-700 text-sm">...</p>
+                </div>
+
+                <div class="p-6 rounded-xl border border-gray-200 bg-white vibrant-card">
+                    <h3 class="text-xl font-bold text-teal-600 mb-2">2. Liderazgo y Gestión</h3>
+                    <p class="text-gray-700 text-sm">...</p>
+                </div>
+
+                <div class="p-6 rounded-xl border border-gray-200 bg-white vibrant-card">
+                    <h3 class="text-xl font-bold text-teal-600 mb-2">3. Destrezas Digitales</h3>
+                    <p class="text-gray-700 text-sm">...</p>
+                </div>
+
+                <!-- Más tarjetas... -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-indigo-800 text-white py-10">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>&copy; 2024 Universidad Popular La Rioja.</p>
+            <p class="text-gray-400">Impulsando una educación inclusiva...</p>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script>
+        const areasData = [
+            { title: "1. Educación Técnica...", problem: "Desempleo...", titles: "Electricidad...", color: "bg-red-500", icon: "🛠️" },
+            { title: "2. Educación Popular...", problem: "Falta de participación...", titles: "Diplomaturas...", color: "bg-yellow-500", icon: "🤝" },
+            { title: "3. Desarrollo Digital...", problem: "Brecha digital...", titles: "Desarrollo Web...", color: "bg-green-500", icon: "💻" },
+            { title: "4. Formación Sociopolítica...", problem: "Falta de conciencia...", titles: "Derechos Humanos...", color: "bg-blue-500", icon: "⚖️" },
+            { title: "5. Cultura y Diversidad...", problem: "Invisibilización...", titles: "Diplomaturas...", color: "bg-purple-500", icon: "🎭" },
+            { title: "6. Soberanía Alimentaria...", problem: "Degradación ambiental...", titles: "Agroecología...", color: "bg-teal-500", icon: "🌱" },
+            { title: "7. Economía Social...", problem: "Pobreza...", titles: "Gestión Cooperativa...", value: "", color: "bg-pink-500", icon: "💰" },
+            { title: "8. Comunicación...", problem: "Falta de representación...", titles: "Comunicación Popular...", color: "bg-orange-500", icon: "📢" },
+            { title: "9. Salud Comunitaria...", problem: "Acceso desigual...", titles: "Salud Comunitaria...", color: "bg-indigo-500", icon: "❤️" },
+        ];
+
+        function renderAreas() {
+            const grid = document.getElementById('areas-grid');
+            grid.innerHTML = areasData.map(area => `
+                <div class="vibrant-card ${area.color} bg-opacity-90 p-6 rounded-xl text-left transform hover:scale-[1.03] transition duration-300 cursor-pointer">
+                    <div class="text-4xl mb-3">${area.icon}</div>
+                    <h3 class="text-xl font-bold mb-2">${area.title}</h3>
+                    <p class="text-sm opacity-80 mb-3"><strong>Problema:</strong> ${area.problem}</p>
+                    <p class="text-xs opacity-70"><strong>Títulos:</strong> ${area.titles}</p>
+                </div>
+            `).join('');
+        }
+
+        function animateValue(id, start, end, duration, decimals = 0) {
+            let startTime = null;
+            const el = document.getElementById(id);
+
+            const step = timestamp => {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                let value = start + (end - start) * progress;
+
+                el.innerHTML = decimals ? value.toFixed(decimals) + '%' : Math.floor(value);
+
+                if (progress < 1) requestAnimationFrame(step);
+            };
+
+            requestAnimationFrame(step);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onload = () => {
+            renderAreas();
+            animateValue("stat-secundario", 0, -2.7, 2000, 1);
+            animateValue("stat-riojareforma", 1990, 2024, 1500, 0);
+            animateValue("stat-areas", 0, 9, 1000);
+        };
+    </script>
+
+</body>
+</html>
