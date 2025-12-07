@@ -1,395 +1,499 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plan Integral de Transformación Digital - La Rioja</title>
-    <!-- Carga de Tailwind CSS -->
+    <title>Programa de Estudio: Comunicadores Digitales</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Estilo: Calm Neutrals (bg-gray-50, text-gray-800, white cards) con acento profesional (indigo-600) -->
+
     <style>
-        /* Configuración global de fuente y scroll suave */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f7f9fc; /* Fondo muy claro, tipo Google Docs */
-            scroll-behavior: smooth;
+            background-color: #f9fafb; 
         }
-        /* Estilo para las tarjetas de contenido */
-        .card {
-            background-color: white;
-            border-radius: 1rem;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            transition: transform 0.3s ease;
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
         }
-        .card:hover {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 500px;
+            }
         }
-        /* Estilo para el botón primario */
-        .btn-primary {
-            background-color: #1a73e8; /* Azul primario de Google */
+        .active-card {
+            background-color: #4f46e5; /* indigo-600 */
             color: white;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 9999px;
-            transition: background-color 0.2s;
+            transform: scale(1.03);
         }
-        .btn-primary:hover {
-            background-color: #1669c5;
+        .project-card {
+            transition: all 0.2s ease-in-out;
+        }
+        /* Estilo para los iconos de las clases */
+        .class-icon {
+            display: inline-block;
+            font-size: 3rem;
+            line-height: 1;
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="text-gray-800">
 
-    <!-- Navbar/Header Fijo (Estilo Material Design) -->
     <header class="sticky top-0 z-50 bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
-                <span class="text-blue-600 mr-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1v-3M16 17V6a2 2 0 00-2-2h-4a2 2 0 00-2 2v11M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
+        <nav class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="inline-block p-2 bg-indigo-600 rounded-lg text-white font-bold text-xl">
+                    CD
                 </span>
-                <span class="hidden sm:inline">Plan Integral</span> La Rioja
-            </h1>
-            <a href="#contacto" class="btn-primary hidden sm:inline-flex">Inscribirse Ahora</a>
-        </div>
+                <span class="text-xl font-bold text-gray-800">Curso Comunicadores Digitales</span>
+            </div>
+            <div class="flex flex-wrap items-center space-x-4 md:space-x-6 mt-4 md:mt-0">
+                <a href="#inicio" class="text-gray-600 hover:text-indigo-600 font-medium">Inicio</a>
+                <a href="#introduccion" class="text-gray-600 hover:text-indigo-600 font-medium">Introducción</a>
+                <a href="#clases" class="text-gray-600 hover:text-indigo-600 font-medium">Clases</a>
+                <a href="#cronograma" class="text-gray-600 hover:text-indigo-600 font-medium">Duración</a>
+                <a href="#resultados" class="text-gray-600 hover:text-indigo-600 font-medium">Resultados</a>
+            </div>
+        </nav>
     </header>
 
-    <!-- Contenido Principal -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
-        
-        <!-- Sección de Banner y Título Principal (Nuevo Estilo) -->
-        <section class="bg-blue-600 text-white rounded-2xl shadow-2xl mb-16 py-16 text-center">
-            <div class="max-w-4xl mx-auto px-4">
-                <h2 class="text-sm font-semibold uppercase opacity-80 mb-2 tracking-widest">
-                    Estrategia Educativa UPBDP
-                </h2>
-                <h1 class="text-4xl sm:text-6xl font-extrabold mb-4">
-                    Plan Integral de Transformación Digital
+    <main>
+        <!-- SECCIÓN 1: INICIO / DATOS GENERALES -->
+        <section id="inicio" class="bg-white pt-20 pb-24 px-6">
+            <div class="container mx-auto text-center max-w-4xl">
+                <!-- REFERENCIA 1 ACTUALIZADA -->
+                <span class="text-indigo-600 font-semibold">Universidad Popular La Rioja</span>
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mt-4 mb-6">
+                    Programa de Estudio: Curso Comunicadores Digitales
                 </h1>
-                <p class="text-lg sm:text-xl font-light opacity-90 max-w-3xl mx-auto">
-                    Una estrategia diseñada para empoderar al talento humano, modernizar la gestión pública de La Rioja y construir una administración más ágil, transparente y centrada en el ciudadano.
+                <p class="text-xl text-gray-600 leading-relaxed">
+                    Una propuesta formativa de 10 horas reloj, orientada a fortalecer las capacidades comunicacionales de los trabajadores y trabajadoras del Estado provincial.
                 </p>
+                <div class="mt-8 flex justify-center space-x-6 text-gray-700">
+                    <span class="flex items-center space-x-2"><span class="text-indigo-600 font-bold">Fecha:</span> 6/11/2025</span>
+                    <span class="flex items-center space-x-2"><span class="text-indigo-600 font-bold">Ciclo:</span> Capacitación Continua</span>
+                </div>
             </div>
         </section>
 
-        <!-- 1. Fundamento Estratégico -->
-        <section id="fundamento" class="mb-16">
-            <div class="card p-8 sm:p-10">
-                <h3 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">1. Fundamento Estratégico</h3>
-                <p class="text-gray-600 mb-6 leading-relaxed">
-                    Este programa, impulsado por la Universidad Popular La Rioja (UPBDP), se justifica en la necesidad de modernizar la administración pública local y provincial para servir mejor a la ciudadanía. La UPBDP asume el liderazgo en la capacitación, reconociendo que la transformación digital va más allá de la tecnología; es un proceso sistémico que exige una profunda revisión de los modelos de gobernanza y el desarrollo de competencias humanas en el cuerpo de empleados públicos.
+        <!-- SECCIÓN 2: INTRODUCCIÓN Y OBJETIVOS -->
+        <section id="introduccion" class="py-20 px-6">
+            <div class="container mx-auto max-w-5xl">
+                <h2 class="text-3xl font-bold text-center mb-12">Introducción y Objetivos del Curso</h2>
+                <div class="bg-white p-8 rounded-lg shadow-lg grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-indigo-700 mb-4">Introducción (II)</h3>
+                        <p class="text-lg text-gray-700 leading-relaxed">
+                            El curso busca brindar herramientas concretas para la redacción, edición y difusión de contenidos institucionales en entornos digitales, combinando buenas prácticas de escritura con el uso de plataformas web (WordPress) y redes sociales oficiales.
+                        </p>
+                        <p class="text-lg text-gray-700 leading-relaxed mt-4">
+                            <!-- TEXTO ORIGINAL: En tiempos donde la comunicación pública se consolida como un eje estratégico de la gestión, este espacio busca contribuir a la profesionalización del empleado público, potenciando su rol como actor clave en la construcción de un Estado cercano, transparente y eficaz. -->
+                            En tiempos donde la comunicación pública se consolida como un eje estratégico de la gestión, este espacio formativo impulsado por la **Universidad Popular La Rioja** busca contribuir a la profesionalización del empleado público, potenciando su rol como actor clave en la construcción de un Estado cercano, transparente y eficaz.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-indigo-700 mb-4">Objetivos (III)</h3>
+                        <p class="text-xl font-bold text-gray-800 mb-4">Objetivo General:</p>
+                        <p class="text-lg text-gray-700 leading-relaxed bg-indigo-50 p-3 rounded-md border-l-4 border-indigo-600">
+                            Desarrollar competencias integrales en comunicación pública digital para empleados de la administración pública provincial.
+                        </p>
+                        <p class="text-xl font-bold text-gray-800 mt-6 mb-2">Objetivos Específicos:</p>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start"><span class="text-indigo-600 mr-2 font-bold">1.</span> Fortalecer las capacidades de redacción institucional orientadas a la comunicación digital.</li>
+                            <li class="flex items-start"><span class="text-indigo-600 mr-2 font-bold">2.</span> Incorporar habilidades para publicación en WordPress y redes sociales oficiales.</li>
+                            <li class="flex items-start"><span class="text-indigo-600 mr-2 font-bold">3.</span> Promover una comunicación gubernamental clara, accesible y coherente.</li>
+                            <li class="flex items-start"><span class="text-indigo-600 mr-2 font-bold">4.</span> Integrar los conocimientos en un proyecto comunicacional final.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: ESTRUCTURA DE CLASES (Interactivo) -->
+        <section id="clases" class="py-20 px-6 bg-gray-100">
+            <div class="container mx-auto max-w-7xl">
+                <h2 class="text-3xl font-bold text-center mb-4">Estructura y Contenidos por Clase</h2>
+                <p class="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto">
+                    El curso se divide en 4 encuentros virtuales de 2.5 horas cada uno (1h 30 teórica + 1h práctica). Haga clic para explorar el detalle de cada clase.
                 </p>
-                
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                    <!-- Eje 1: Resiliencia -->
-                    <div class="p-5 bg-blue-50 rounded-lg border-l-4 border-blue-600">
-                        <p class="text-lg font-semibold text-blue-700 mb-1">Imperativo de Resiliencia</p>
-                        <p class="text-sm text-gray-600">Avanzar hacia un sistema administrativo más flexible, inclusivo y resiliente, capaz de afrontar los desafíos locales.</p>
-                    </div>
-                    <!-- Eje 2: Capacidad Humana -->
-                    <div class="p-5 bg-blue-50 rounded-lg border-l-4 border-blue-600">
-                        <p class="text-lg font-semibold text-blue-700 mb-1">Capacidad Humana</p>
-                        <p class="text-sm text-gray-600">Asegurar que la formación elimine el "cuello de botella" humano para la transformación sistémica.</p>
-                    </div>
-                    <!-- Eje 3: Gobernanza Ágil -->
-                    <div class="p-5 bg-blue-50 rounded-lg border-l-4 border-blue-600">
-                        <p class="text-lg font-semibold text-blue-700 mb-1">Gobernanza Ágil</p>
-                        <p class="text-sm text-gray-600">Fomentar el liderazgo distribuido y la autonomía institucional para una implementación digital efectiva.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 2. Visión General del Programa (Módulos) -->
-        <section id="modulos-resumen" class="mb-16">
-            <h3 class="text-3xl font-bold text-gray-800 mb-8 text-center">2. Estructura del Programa (4 Módulos)</h3>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                
-                <!-- Módulo I Card -->
-                <div class="card p-6 border-t-4 border-red-500 flex flex-col justify-between">
-                    <h4 class="text-xl font-semibold mb-2 text-red-700">Módulo I: Base Digital</h4>
-                    <p class="text-gray-600 text-sm mb-4">Alfabetización y Competencias Digitales Básicas (Productividad y Seguridad).</p>
-                    <a href="#modulo1" class="text-red-500 font-medium text-sm hover:underline self-start">Ver Detalle &rarr;</a>
-                </div>
-
-                <!-- Módulo II Card -->
-                <div class="card p-6 border-t-4 border-yellow-500 flex flex-col justify-between">
-                    <h4 class="text-xl font-semibold mb-2 text-yellow-700">Módulo II: Contenidos</h4>
-                    <p class="text-gray-600 text-sm mb-4">Gestión de Contenidos y Redacción Digital (Accesibilidad y Usabilidad).</p>
-                    <a href="#modulo2" class="text-yellow-500 font-medium text-sm hover:underline self-start">Ver Detalle &rarr;</a>
-                </div>
-
-                <!-- Módulo III Card -->
-                <div class="card p-6 border-t-4 border-green-500 flex flex-col justify-between">
-                    <h4 class="text-xl font-semibold mb-2 text-green-700">Módulo III: Ciudadanía</h4>
-                    <p class="text-gray-600 text-sm mb-4">Comunicación 360 y Ciudadanía Digital (Confianza y Transparencia).</p>
-                    <a href="#modulo3" class="text-green-500 font-medium text-sm hover:underline self-start">Ver Detalle &rarr;</a>
-                </div>
-
-                <!-- Módulo IV Card -->
-                <div class="card p-6 border-t-4 border-blue-500 flex flex-col justify-between">
-                    <h4 class="text-xl font-semibold mb-2 text-blue-700">Módulo IV: Innovación</h4>
-                    <p class="text-gray-600 text-sm mb-4">Inteligencia Artificial (IA) para la Gestión y Servicios Públicos (Tecnologías de Frontera).</p>
-                    <a href="#modulo4" class="text-blue-500 font-medium text-sm hover:underline self-start">Ver Detalle &rarr;</a>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- 3. Detalle de Módulos (Usando Acordeón simple para mejor visualización móvil) -->
-        <section id="modulos-detalle" class="mb-16">
-            <h3 class="text-3xl font-bold text-gray-800 mb-8 text-center">3. Contenido Detallado y Resultados</h3>
-
-            <div class="space-y-4">
-                <!-- Módulo I -->
-                <div id="modulo1" class="card p-6">
-                    <button class="w-full text-left flex justify-between items-center" onclick="toggleModule('content1')">
-                        <h4 class="text-xl font-bold text-red-700">Módulo I: Alfabetización y Competencias Digitales Básicas</h4>
-                        <span id="icon1" class="text-2xl text-red-500">+</span>
-                    </button>
-                    <div id="content1" class="mt-4 overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
-                        <p class="text-gray-600 mb-4 font-semibold">Objetivo Central: Dominar las herramientas esenciales para la productividad en un entorno digital seguro y colaborativo.</p>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
-                            <!-- Temario -->
-                            <div class="lg:col-span-2">
-                                <h5 class="font-bold text-lg text-gray-700 mb-2">Temario Clave</h5>
-                                <ul class="list-disc list-inside space-y-1 text-gray-600 ml-4">
-                                    <li>Herramientas de Productividad Esencial en la Nube (La Rioja Digital).</li>
-                                    <li>Seguridad y Resiliencia Digital (Phishing, contraseñas robustas, doble factor).</li>
-                                    <li>Gestión y Colaboración Asíncrona (Organización de archivos, Netiqueta).</li>
-                                </ul>
-                            </div>
-                            <!-- Resultados -->
-                            <div class="lg:col-span-1 border-l pl-4 border-red-200">
-                                <h5 class="font-bold text-lg text-gray-700 mb-2">Resultados Esperados (R.E.)</h5>
-                                <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
-                                    <li>Dominio Funcional de herramientas colaborativas.</li>
-                                    <li>Seguridad Aplicada (identificación de 90% de intentos de phishing).</li>
-                                    <li>Eficiencia Operativa (reducción del 20% en tiempo de búsqueda de archivos).</li>
-                                </ul>
-                            </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="md:col-span-1 flex flex-col space-y-4">
+                        <!-- CLASE 1 CARD -->
+                        <div id="card-clase1" class="project-card bg-white p-6 rounded-lg shadow-lg cursor-pointer hover:shadow-xl" onclick="showClassDetails('clase1')">
+                            <span class="class-icon">📰</span>
+                            <h3 class="text-xl font-semibold mt-2">CLASE 1: Comunicación Pública Digital</h3>
+                            <p class="text-gray-600">Lenguaje claro y la noticia institucional.</p>
+                        </div>
+                        <!-- CLASE 2 CARD -->
+                        <div id="card-clase2" class="project-card bg-white p-6 rounded-lg shadow-lg cursor-pointer hover:shadow-xl" onclick="showClassDetails('clase2')">
+                            <span class="class-icon">📝</span>
+                            <h3 class="text-xl font-semibold mt-2">CLASE 2: Redacción y Géneros Institucionales</h3>
+                            <p class="text-gray-600">Noticias, informes y notas de opinión.</p>
+                        </div>
+                        <!-- CLASE 3 CARD -->
+                        <div id="card-clase3" class="project-card bg-white p-6 rounded-lg shadow-lg cursor-pointer hover:shadow-xl" onclick="showClassDetails('clase3')">
+                            <span class="class-icon">📱</span>
+                            <h3 class="text-xl font-semibold mt-2">CLASE 3: WordPress y Redes Sociales</h3>
+                            <p class="text-gray-600">Publicación, optimización y difusión.</p>
+                        </div>
+                        <!-- CLASE 4 CARD -->
+                        <div id="card-clase4" class="project-card bg-white p-6 rounded-lg shadow-lg cursor-pointer hover:shadow-xl" onclick="showClassDetails('clase4')">
+                            <span class="class-icon">🤝</span>
+                            <h3 class="text-xl font-semibold mt-2">CLASE 4: Proyecto Final Integrador</h3>
+                            <p class="text-gray-600">Comunicación institucional integrada.</p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Módulo II -->
-                <div id="modulo2" class="card p-6">
-                    <button class="w-full text-left flex justify-between items-center" onclick="toggleModule('content2')">
-                        <h4 class="text-xl font-bold text-yellow-700">Módulo II: Herramientas de Gestión de Contenidos y Redacción Digital</h4>
-                        <span id="icon2" class="text-2xl text-yellow-500">+</span>
-                    </button>
-                    <div id="content2" class="mt-4 overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
-                        <p class="text-gray-600 mb-4 font-semibold">Objetivo Central: Diseñar y desarrollar recursos de comunicación digital, asegurando que la información sea accesible, clara y cumpla con los estándares de usabilidad.</p>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
-                            <!-- Temario -->
-                            <div class="lg:col-span-2">
-                                <h5 class="font-bold text-lg text-gray-700 mb-2">Temario Clave</h5>
-                                <ul class="list-disc list-inside space-y-1 text-gray-600 ml-4">
-                                    <li>Gestión de Plataformas (CMS) para Servicios Públicos (Frontend/Backend).</li>
-                                    <li>Redacción Web Orientada al Ciudadano (Pirámide invertida, SEO Básico).</li>
-                                    <li>Accesibilidad Digital (WCAG) y Fomento de la Cultura Organizacional.</li>
-                                </ul>
-                            </div>
-                            <!-- Resultados -->
-                            <div class="lg:col-span-1 border-l pl-4 border-yellow-200">
-                                <h5 class="font-bold text-lg text-gray-700 mb-2">Resultados Esperados (R.E.)</h5>
-                                <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
-                                    <li>Creación de Contenido web funcional en el CMS institucional.</li>
-                                    <li>Redacción con un puntaje de accesibilidad mínimo de 80/100.</li>
-                                    <li>Documentación de un Proceso de Gestión de contenidos estandarizado.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Módulo III -->
-                <div id="modulo3" class="card p-6">
-                    <button class="w-full text-left flex justify-between items-center" onclick="toggleModule('content3')">
-                        <h4 class="text-xl font-bold text-green-700">Módulo III: Comunicación 360 y Ciudadanía Digital</h4>
-                        <span id="icon3" class="text-2xl text-green-500">+</span>
-                    </button>
-                    <div id="content3" class="mt-4 overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
-                        <p class="text-gray-600 mb-4 font-semibold">Objetivo Central: Integrar los canales de comunicación y fortalecer la confianza ciudadana, la transparencia y la gobernanza participativa.</p>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
-                            <!-- Temario -->
-                            <div class="lg:col-span-2">
-                                <h5 class="font-bold text-lg text-gray-700 mb-2">Temario Clave</h5>
-                                <ul class="list-disc list-inside space-y-1 text-gray-600 ml-4">
-                                    <li>Estrategias de Comunicación 360 (Unificación de redes, web, mailing, atención).</li>
-                                    <li>Medición de Impacto y Retroalimentación (Analytics Digital).</li>
-                                    <li>Ética, Transparencia y Gestión de Crisis (Respuesta ante desinformación).</li>
-                                </ul>
-                            </div>
-                            <!-- Resultados -->
-                            <div class="lg:col-span-1 border-l pl-4 border-green-200">
-                                <h5 class="font-bold text-lg text-gray-700 mb-2">Resultados Esperados (R.E.)</h5>
-                                <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
-                                    <li>Diseño de una Estrategia Integrada 360.</li>
-                                    <li>Análisis de Datos de rendimiento web.</li>
-                                    <li>Elaboración de un Manual de Protocolo de Crisis Digital.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Módulo IV -->
-                <div id="modulo4" class="card p-6">
-                    <button class="w-full text-left flex justify-between items-center" onclick="toggleModule('content4')">
-                        <h4 class="text-xl font-bold text-blue-700">Módulo IV: Inteligencia Artificial (IA) para la Gestión y los Servicios Públicos</h4>
-                        <span id="icon4" class="text-2xl text-blue-500">+</span>
-                    </button>
-                    <div id="content4" class="mt-4 overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
-                        <p class="text-gray-600 mb-4 font-semibold">Objetivo Central: Exploración ética de tecnologías de frontera para optimizar la gestión y personalizar servicios.</p>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
-                            <!-- Temario -->
-                            <div class="lg:col-span-2">
-                                <h5 class="font-bold text-lg text-gray-700 mb-2">Temario Clave</h5>
-                                <ul class="list-disc list-inside space-y-1 text-gray-600 ml-4">
-                                    <li>Fundamentos IA: LLMs (Modelos de Lenguaje Grandes) y Prompt Engineering aplicados al sector público.</li>
-                                    <li>Automatización: Implementación de Chatbots de atención y clasificación inteligente de solicitudes.</li>
-                                    <li>Ética y Sesgos: Supervisión humana, equidad y confianza en decisiones automatizadas.</li>
-                                </ul>
-                            </div>
-                            <!-- Imagen conceptual de IA en el gobierno -->
-                            <div class="lg:col-span-1 border-l pl-4 border-blue-200 flex items-center justify-center">
-                                <div class="text-center p-4 bg-blue-50 rounded-lg">
-                                    <span class="text-blue-600 font-bold">IA para el servicio público</span>
-                                    
-                                </div>
-                            </div>
+                    <div id="class-details" class="md:col-span-2 bg-white p-8 rounded-lg shadow-inner min-h-[400px]">
+                        <div class="flex flex-col items-center justify-center h-full text-center">
+                            <span class="text-5xl text-gray-400">←</span>
+                            <h3 class="text-2xl font-semibold text-gray-700 mt-4">Seleccione una Clase</h3>
+                            <p class="text-gray-500 mt-2">Elija uno de los encuentros de la izquierda para ver los objetivos y contenidos detallados.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 4. Evaluación y Certificación -->
-        <section id="evaluacion" class="mb-16">
-            <div class="card p-8 sm:p-10">
-                <h3 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">4. Evaluación y Certificación</h3>
+        <!-- SECCIÓN 4: DURACIÓN, MODALIDAD Y CRONOGRAMA -->
+        <section id="cronograma" class="py-20 px-6">
+            <div class="container mx-auto max-w-5xl">
+                <h2 class="text-3xl font-bold text-center mb-12">Duración, Modalidad y Cronograma (IV y V)</h2>
                 
-                <p class="text-lg font-semibold text-blue-700 mb-4">Requisitos de Aprobación:</p>
-                <ul class="list-disc list-inside text-gray-700 ml-4 mb-6">
-                    <li>80% Asistencia.</li>
-                    <li>75% Aprobación Promedio.</li>
-                </ul>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="text-center p-6 bg-indigo-50 rounded-lg shadow-md border-b-4 border-indigo-600">
+                        <h3 class="text-xl font-bold text-indigo-800">Duración Total</h3>
+                        <p class="text-3xl font-extrabold text-gray-900 mt-2">4 Semanas</p>
+                        <p class="text-gray-600 mt-1">(10 horas reloj)</p>
+                    </div>
+                    <div class="text-center p-6 bg-indigo-50 rounded-lg shadow-md border-b-4 border-indigo-600">
+                        <h3 class="text-xl font-bold text-indigo-800">Modalidad</h3>
+                        <p class="text-gray-800 mt-2 font-medium">Virtual Sincrónica</p>
+                        <p class="text-sm text-gray-600">Plataforma Zoom o Google Meet</p>
+                    </div>
+                    <div class="text-center p-6 bg-indigo-50 rounded-lg shadow-md border-b-4 border-indigo-600">
+                        <h3 class="text-xl font-bold text-indigo-800">Metodología</h3>
+                        <p class="text-gray-800 mt-2 font-medium">Teórico-Práctico</p>
+                        <p class="text-sm text-gray-600">Análisis de casos y aprendizaje basado en proyectos.</p>
+                    </div>
+                </div>
 
-                <h4 class="text-2xl font-semibold text-gray-700 mb-4">Fases de Evaluación</h4>
-                
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200 rounded-lg overflow-hidden shadow-sm">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fase</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ponderación</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Formativa</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0%</td>
-                                <td class="px-6 py-4 text-sm text-gray-500">Actividades prácticas y quizzes al finalizar cada tema (Obligatoria).</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Sumativa A</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">40%</td>
-                                <td class="px-6 py-4 text-sm text-gray-500">Exámenes teóricos y conceptuales al finalizar cada módulo.</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Sumativa B</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">60%</td>
-                                <td class="px-6 py-4 text-sm text-gray-500">Proyecto Integrador Final: Caso práctico real simulado aplicando conocimientos de los 4 módulos.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <h3 class="text-2xl font-bold text-center mb-8 text-gray-800">Cronograma Resumido</h3>
+                <div class="flex flex-col space-y-4">
+                    <!-- Semana 1 -->
+                    <div class="p-4 bg-white rounded-lg shadow-sm flex justify-between items-center border-l-4 border-indigo-400">
+                        <div class="font-bold text-indigo-600">SEMANA 1</div>
+                        <div class="flex-1 mx-4 text-gray-700">Comunicación pública en era digital</div>
+                        <div class="text-sm text-gray-500">Análisis y redacción individual</div>
+                    </div>
+                    <!-- Semana 2 -->
+                    <div class="p-4 bg-white rounded-lg shadow-sm flex justify-between items-center border-l-4 border-indigo-400">
+                        <div class="font-bold text-indigo-600">SEMANA 2</div>
+                        <div class="flex-1 mx-4 text-gray-700">Redacción institucional y géneros</div>
+                        <div class="text-sm text-gray-500">Ejercicios grupales y redacción informes</div>
+                    </div>
+                    <!-- Semana 3 -->
+                    <div class="p-4 bg-white rounded-lg shadow-sm flex justify-between items-center border-l-4 border-indigo-400">
+                        <div class="font-bold text-indigo-600">SEMANA 3</div>
+                        <div class="flex-1 mx-4 text-gray-700">WordPress y redes sociales</div>
+                        <div class="text-sm text-gray-500">Publicación práctica y adaptación de contenidos</div>
+                    </div>
+                    <!-- Semana 4 -->
+                    <div class="p-4 bg-white rounded-lg shadow-sm flex justify-between items-center border-l-4 border-indigo-400">
+                        <div class="font-bold text-indigo-600">SEMANA 4</div>
+                        <div class="flex-1 mx-4 text-gray-700">Comunicación integrada</div>
+                        <div class="text-sm text-gray-500">Proyecto final y evaluación</div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- 5. Plan de Lanzamiento -->
-        <section id="lanzamiento" class="mb-16">
-            <h3 class="text-3xl font-bold text-gray-800 mb-8 text-center">5. Plan de Lanzamiento</h3>
-
-            <div class="card p-8 sm:p-10 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                
-                <!-- Pre-lanzamiento -->
-                <div class="border-b-4 md:border-b-0 md:border-r-4 border-gray-300 pb-6 md:pb-0 md:pr-8">
-                    <p class="text-5xl font-extrabold text-blue-600 mb-2">4 Semanas</p>
-                    <h5 class="text-xl font-semibold text-gray-800 mb-2">Pre-lanzamiento</h5>
-                    <p class="text-sm text-gray-600">Convocatoria, Cronograma y Definición de Expectativas.</p>
-                </div>
-
-                <!-- Lanzamiento -->
-                <div class="border-b-4 md:border-b-0 md:border-r-4 border-gray-300 pb-6 md:pb-0 md:pr-8">
-                    <p class="text-5xl font-extrabold text-blue-600 mb-2">1 Semana</p>
-                    <h5 class="text-xl font-semibold text-gray-800 mb-2">Lanzamiento</h5>
-                    <p class="text-sm text-gray-600">Acto Oficial, Apertura del Programa y Testimonios de Involucrados.</p>
-                </div>
-
-                <!-- Sostenimiento -->
-                <div class="pb-6 md:pb-0">
-                    <p class="text-5xl font-extrabold text-blue-600 mb-2">Continuo</p>
-                    <h5 class="text-xl font-semibold text-gray-800 mb-2">Sostenimiento</h5>
-                    <p class="text-sm text-gray-600">Seguimiento del Progreso, Documentación de Casos de Éxito y Soporte a Empleados.</p>
+        <!-- SECCIÓN 5: RESULTADOS ESPERADOS -->
+        <section id="resultados" class="py-20 px-6 bg-gray-100">
+            <div class="container mx-auto max-w-4xl text-center">
+                <h2 class="text-3xl font-bold mb-4">Resultados Esperados (VI)</h2>
+                <p class="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
+                    El curso busca generar un perfil de comunicador público con dominio integral del ecosistema digital.
+                </p>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-6">Áreas de Impacto en Competencias</h3>
+                    <!-- Diagrama de radar para ilustrar el impacto en las competencias -->
+                    <div class="chart-container">
+                        <canvas id="impactChart"></canvas>
+                    </div>
+                    
+                    <div class="mt-8 text-left space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <span class="flex-shrink-0 w-6 h-6 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold text-sm">✅</span>
+                            <p class="text-gray-700">Dominio de la Comunicación 360°: Capacidad para diseñar estrategias comunicacionales integradas que conecten web, redes y canales internos.</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="flex-shrink-0 w-6 h-6 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold text-sm">✅</span>
+                            <p class="text-gray-700">Implementación efectiva del ciclo comunicacional completo: desde la redacción hasta la medición de impacto.</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="flex-shrink-0 w-6 h-6 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold text-sm">✅</span>
+                            <p class="text-gray-700">Materiales institucionales mejorados en claridad, coherencia y accesibilidad.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Sección de Contacto/CTA -->
-        <section id="contacto" class="text-center py-12 bg-blue-100 rounded-2xl shadow-lg">
-            <h3 class="text-3xl font-bold text-blue-900 mb-3">¿Listo para la Transformación Digital?</h3>
-            <p class="text-lg text-blue-700 mb-6">Únete al Plan Integral de Transformación Digital de La Rioja.</p>
-            <a href="#" class="btn-primary text-xl shadow-lg hover:shadow-xl">
-                Contáctanos para Iniciar
-            </a>
         </section>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-6 mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
-            &copy; 2025 UPBDP - Universidad Popular La Rioja. Todos los derechos reservados.
+    <footer class="bg-gray-800 text-gray-300 py-12 px-6">
+        <div class="container mx-auto text-center">
+            <p class="text-2xl font-bold mb-2">CURSO CD</p>
+            <p>Programa de Estudio para Comunicadores Digitales</p>
+            <!-- REFERENCIA 2 ACTUALIZADA -->
+            <p class="text-sm text-gray-400 mt-4">&copy; 2025 Universidad Popular La Rioja. Todos los derechos reservados.</p>
         </div>
     </footer>
 
-    <!-- JavaScript para funcionalidad del acordeón (mobile-friendly) -->
     <script>
-        /**
-         * Función para alternar la visibilidad de los contenidos de los módulos
-         * y cambiar el icono.
-         */
-        function toggleModule(contentId) {
-            const content = document.getElementById(contentId);
-            const iconId = 'icon' + contentId.slice(-1);
-            const icon = document.getElementById(iconId);
+        const classData = {
+            'clase1': {
+                title: 'CLASE 1 - La comunicación pública en la era digital',
+                icon: '📰',
+                description: 'Este encuentro busca comprender el rol del empleado público como comunicador del Estado, diferenciando los tipos de comunicación y reconociendo la importancia del lenguaje claro y la escritura con enfoque ciudadano.',
+                objectives: [
+                    'Comprender el rol del empleado público como comunicador del Estado.',
+                    'Diferenciar comunicación pública, política y comercial.',
+                    'Reconocer la importancia del lenguaje claro y la escritura con enfoque ciudadano.'
+                ],
+                contents: [
+                    'Fundamentos de la comunicación pública.',
+                    'Principios del lenguaje claro en la Administración Pública.',
+                    'Elementos de la noticia institucional.',
+                    'La escritura como herramienta de gestión y transparencia.'
+                ],
+                activity: 'Análisis colectivo de noticias institucionales. Redacción individual de nota breve (150-200 palabras).'
+            },
+            'clase2': {
+                title: 'CLASE 2 - Redacción institucional y géneros comunicacionales',
+                icon: '📝',
+                description: 'La segunda clase se enfoca en la identificación y dominio de los distintos géneros comunicacionales institucionales (noticias, informes, notas de opinión), aplicando criterios de coherencia, pertinencia y tono institucional.',
+                objectives: [
+                    'Identificar distintos géneros comunicacionales institucionales.',
+                    'Dominar estructura de noticias, informes y notas de opinión.',
+                    'Aplicar criterios de coherencia, pertinencia y tono institucional.'
+                ],
+                contents: [
+                    'Los géneros comunicacionales en el Estado.',
+                    'La noticia institucional (pirámide invertida).',
+                    'El informe institucional.',
+                    'La nota de opinión institucional.',
+                    'Estilo y coherencia en la redacción pública.'
+                ],
+                activity: 'Revisión comparada de textos institucionales. Redacción de nota informativa o informe de gestión (200-250 palabras).'
+            },
+            'clase3': {
+                title: 'CLASE 3 - Publicación en WordPress y difusión en redes institucionales',
+                icon: '📱',
+                description: 'Este módulo incorpora conocimientos técnicos para la publicación en sitios WordPress, optimización de contenidos (textos, imágenes, enlaces) y estrategias efectivas de difusión a través de las redes sociales oficiales.',
+                objectives: [
+                    'Incorporar conocimientos para publicación en sitios WordPress.',
+                    'Aprender a optimizar textos, imágenes y enlaces.',
+                    'Conocer estrategias de difusión en redes sociales institucionales.'
+                ],
+                contents: [
+                    'Introducción a WordPress institucional.',
+                    'Publicación de noticias institucionales.',
+                    'Accesibilidad y transparencia digital.',
+                    'Difusión en redes institucionales.'
+                ],
+                activity: 'Demostración en vivo de publicación en WordPress. Publicación individual de noticia en entorno de práctica. Redacción de publicación para redes sociales (100 palabras).'
+            },
+            'clase4': {
+                title: 'CLASE 4 - Comunicación institucional integrada - Proyecto final',
+                icon: '🤝',
+                description: 'El encuentro final integra todos los conocimientos adquiridos para elaborar un proyecto comunicacional completo, además de evaluar críticamente la comunicación institucional como política pública.',
+                objectives: [
+                    'Integrar conocimientos sobre redacción, publicación y difusión.',
+                    'Elaborar proyecto comunicacional completo.',
+                    'Evaluar críticamente la comunicación institucional como política pública.'
+                ],
+                contents: [
+                    'La comunicación institucional como sistema integrado.',
+                    'Evaluación y mejora continua de la comunicación.',
+                    'El proyecto comunicacional final.'
+                ],
+                activity: 'Ejercicio final integrador que incluye: Noticia/informe, versión publicada en WordPress y pieza de difusión para redes sociales.'
+            }
+        };
 
-            if (content.classList.contains('max-h-0')) {
-                // Abrir
-                content.classList.remove('max-h-0');
-                // Ajustamos el max-height dinámicamente para asegurar la transición
-                content.style.maxHeight = content.scrollHeight + 'px';
-                icon.textContent = '−';
-            } else {
-                // Cerrar
-                content.style.maxHeight = '0';
-                // Usamos un pequeño timeout para que la animación de cerrar sea visible
-                setTimeout(() => {
-                    content.classList.add('max-h-0');
-                }, 500); // 500ms es la duración de la transición CSS
-                icon.textContent = '+';
+        const detailsPane = document.getElementById('class-details');
+        let currentActiveCard = null;
+
+        function showClassDetails(key) {
+            const data = classData[key];
+            if (!data) return;
+
+            // Formatear Objetivos
+            let objectivesHtml = data.objectives.map(obj => 
+                `<li class="flex items-start space-x-3 text-sm">
+                    <span class="flex-shrink-0 w-5 h-5 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-sm">✓</span>
+                    <span class="text-gray-700">${obj}</span>
+                </li>`
+            ).join('');
+
+            // Formatear Contenidos
+            let contentsHtml = data.contents.map((mod, index) => 
+                `<li class="flex items-start space-x-3 text-sm">
+                    <span class="flex-shrink-0 w-5 h-5 text-indigo-600 flex items-center justify-center font-bold text-base">${index + 1}.</span>
+                    <span class="text-gray-700">${mod}</span>
+                </li>`
+            ).join('');
+
+            detailsPane.innerHTML = `
+                <div class="flex items-center space-x-4 mb-6">
+                    <span class="class-icon text-5xl">${data.icon}</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900">${data.title}</h3>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">${data.description}</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-800 mb-3 border-b pb-1">Objetivos Específicos:</h4>
+                        <ul class="space-y-3">
+                            ${objectivesHtml}
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-800 mb-3 border-b pb-1">Contenidos Principales:</h4>
+                        <ul class="space-y-3">
+                            ${contentsHtml}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                    <h5 class="font-bold text-yellow-800">Actividad Práctica:</h5>
+                    <p class="text-sm text-yellow-700">${data.activity}</p>
+                </div>
+            `;
+
+            // Lógica para resaltar la tarjeta activa
+            const cardId = `card-${key}`;
+            const newActiveCard = document.getElementById(cardId);
+
+            if (currentActiveCard) {
+                currentActiveCard.classList.remove('active-card');
+                currentActiveCard.classList.add('bg-white');
+            }
+            
+            if (newActiveCard) {
+                newActiveCard.classList.add('active-card');
+                newActiveCard.classList.remove('bg-white');
+                currentActiveCard = newActiveCard;
             }
         }
+
+        function initChart() {
+            const ctx = document.getElementById('impactChart').getContext('2d');
+            if (window.myImpactChart) {
+                window.myImpactChart.destroy();
+            }
+            // Adaptando el Radar Chart a los 4 focos del curso
+            window.myImpactChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Lenguaje Claro y Transparencia', 
+                        'Redacción Institucional', 
+                        'Manejo de WordPress y Redes', 
+                        'Estrategias de Comunicación 360°'
+                    ],
+                    datasets: [{
+                        label: 'Perfil Inicial (Estimado)',
+                        data: [4, 3, 2, 2],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(255, 99, 132, 1)'
+                    }, {
+                        label: 'Perfil Proyectado (Post-Curso)',
+                        data: [9, 8, 8, 9],
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(79, 70, 229, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: '#e5e7eb' },
+                            grid: { color: '#e5e7eb' },
+                            pointLabels: {
+                                font: { size: 13, weight: '600' },
+                                color: '#374151'
+                            },
+                            ticks: {
+                                backdropColor: 'rgba(255, 255, 255, 0.75)',
+                                color: '#6b7280',
+                                stepSize: 2,
+                                max: 10,
+                                min: 0
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: { size: 14 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.r !== null) { label += context.parsed.r + ' / 10'; }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initChart();
+
+            // Configurar el smooth scroll para la navegación
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Mostrar los detalles de la primera clase al cargar
+            showClassDetails('clase1');
+        });
+
     </script>
 </body>
 </html>
