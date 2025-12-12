@@ -74,8 +74,8 @@
     </main>
 
     <script>
-        // URL Pública de la Hoja de Cálculo de Google como CSV
-        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vToqT3HiAxRl9Mw4bEYtQBmWRRWf16eJuT0WrAEDWOEgIUlVncbDUiZApOIT-pqDlMaI7PTxVRMvlL3/pub?output=csv';
+        // URL Pública del archivo CSV de GitHub (Usando la URL raw)
+        const CSV_URL = 'https://raw.githubusercontent.com/gabrielgenri/proyectos.github.io/genri/Inventario%20-%20Hoja.csv';
         
         let allProducts = []; // Array que almacenará los productos cargados
         let currentFilter = 'Todos';
@@ -92,7 +92,7 @@
          * @returns {string} HTML de la tarjeta.
          */
         function createProductCard(product) {
-            // Generar un texto limpio para el placeholder
+            // Generar un texto limpio para el placeholder. Usamos el nombre del producto como texto.
             const placeholderText = product.name ? encodeURIComponent(product.name.substring(0, 25).trim()) : 'Producto';
             const placeholderUrl = `https://placehold.co/400x300/1e40af/ffffff?text=${placeholderText}`; // Fondo azul primario
 
@@ -139,7 +139,11 @@
         
         /**
          * Parses CSV text into an array of product objects.
-         * Utiliza las columnas: ID (0), Imagen (1), Nombre (4), Descripción (5), Categoría (6), Precio (8).
+         * Column Indices (0-based) based on the provided CSV structure:
+         * Index 4: Nombre
+         * Index 5: Descripción
+         * Index 6: Categoría
+         * Index 8: Precio (Precio al Público)
          */
         function parseCSV(csvText) {
             const lines = csvText.trim().split(/\r?\n/);
@@ -158,7 +162,10 @@
                 try {
                     // Obtener Precio al Público (Índice 8)
                     const rawPrice = (values[8] || '0').replace(/["$ ]/g, ''); 
-                    const price = parseFloat(rawPrice);
+                    // Usamos replace(/\./g, '') para eliminar puntos de miles y luego replace(/,/g, '.') para manejar el decimal si usa coma.
+                    // Asumiendo que el formato es $XX.XX o $XX,XX
+                    const normalizedPrice = rawPrice.replace(/\./g, '').replace(/,/g, '.'); 
+                    const price = parseFloat(normalizedPrice);
 
                     // Obtener la URL del marcador de posición (Índice 1)
                     const rawImageUrl = (values[1] || '').replace(/"/g, '').trim(); 
