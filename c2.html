@@ -1,0 +1,286 @@
+<!DOCTYPE ahtml>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos Moderno</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Fuente Inter para un estilo moderno */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Gris claro de fondo */
+        }
+        /* Estilos personalizados para el contenedor principal */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem; /* Separación entre tarjetas */
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <header class="bg-blue-600 shadow-lg sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <h1 class="text-3xl font-extrabold text-white">
+                Catálogo de Inventario (Cargado por CSV)
+            </h1>
+            <span class="text-white text-lg font-medium opacity-80">
+                Total de Productos: <span id="product-count">0</span>
+            </span>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        
+        <!-- Sección de Filtros por Categoría -->
+        <section class="mb-8 p-4 bg-white rounded-xl shadow-md">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Filtrar por Categoría</h2>
+            <div id="category-filters" class="flex flex-wrap gap-3">
+                <!-- Los botones de filtro se insertarán aquí por JavaScript -->
+            </div>
+        </section>
+
+        <!-- Contenedor del Catálogo de Productos -->
+        <section id="product-list" class="product-grid">
+            <div class="col-span-full text-center p-8 text-xl text-blue-600 font-semibold">Cargando datos del catálogo...</div>
+            <!-- El mensaje de carga o las tarjetas de productos se mostrarán aquí -->
+        </section>
+
+        <!-- Mensaje si no hay productos -->
+        <div id="no-products-message" class="hidden text-center p-8 bg-white rounded-xl shadow-md mt-8">
+            <p class="text-2xl text-gray-500 font-medium">
+                No se encontraron productos en esta categoría.
+            </p>
+        </div>
+
+    </main>
+
+    <script>
+        // URL Pública de la Hoja de Cálculo de Google como CSV
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vToqT3HiAxRl9Mw4bEYtQBmWRRWf16eJuT0WrAEDWOEgIUlVncbDUiZApOIT-pqDlMaI7PTxVRMvlL3/pub?output=csv';
+        
+        let allProducts = []; // Array que almacenará los productos cargados
+        let currentFilter = 'Todos';
+
+        // Referencias a elementos del DOM
+        const productListEl = document.getElementById('product-list');
+        const filtersEl = document.getElementById('category-filters');
+        const productCountEl = document.getElementById('product-count');
+        const noProductsMessageEl = document.getElementById('no-products-message');
+        
+        /**
+         * Crea el HTML para una tarjeta de producto.
+         * @param {Object} product - Objeto de producto.
+         * @returns {string} HTML de la tarjeta.
+         */
+        function createProductCard(product) {
+            // Genera el texto del placeholder: Nombre del archivo de imagen + Nombre del producto
+            // Se usa el nombre de la imagen (Columna 1) en el marcador de posición para contextualizar
+            const placeholderInfo = product.imageUrl 
+                                    ? `${product.imageUrl}\n${product.name.substring(0, 15).trim()}...` 
+                                    : `${product.name.substring(0, 15).trim()}...`;
+
+            const placeholderText = encodeURIComponent(placeholderInfo);
+            const placeholderUrl = `https://placehold.co/400x300/1e40af/ffffff?text=${placeholderText}`;
+
+            return `
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
+                    <!-- Imagen del Producto (Placeholder) -->
+                    <div class="h-48 bg-gray-100 overflow-hidden flex items-center justify-center">
+                        <img 
+                            src="${placeholderUrl}" 
+                            alt="Imagen de ${product.name}" 
+                            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                            onerror="this.onerror=null; this.src='https://placehold.co/400x300/e5e7eb/6b7280?text=Imagen+No+Disp.'"
+                        >
+                    </div>
+                    
+                    <div class="p-6 flex flex-col flex-grow">
+                        <!-- Nombre del Producto -->
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">${product.name}</h3>
+                        
+                        <!-- Categoría (Etiqueta) -->
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mb-3">${product.category}</span>
+                        
+                        <!-- Descripción -->
+                        <p class="text-gray-600 text-sm mb-4 flex-grow">${product.description}</p>
+                        
+                        <!-- Precio al Público -->
+                        <div class="pt-4 border-t border-gray-100 mt-auto">
+                            <p class="text-2xl font-extrabold text-blue-600">
+                                $${product.price.toFixed(2)} USD
+                            </p>
+                            <p class="text-sm text-gray-500 mt-1">Precio al Público</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        /**
+         * Parses CSV text into an array of product objects.
+         * Expected column indices based on the Google Sheet (9 columns in total, indices 0-8):
+         * Index 1: Imagen con URL marcador de posición -> imageUrl
+         * Index 4: Nombre -> name
+         * Index 5: Descripción -> description
+         * Index 6: Categoría -> category
+         * Index 8: Precio (Precio al Público) -> price
+         * @param {string} csvText - The raw CSV content.
+         * @returns {Array<Object>} Array of product objects.
+         */
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split(/\r?\n/);
+            if (lines.length <= 1) return []; // Skip headers or empty file
+
+            const products = [];
+            // Start from line 1 to skip headers
+            for (let i = 1; i < lines.length; i++) {
+                // Regex split: matches quoted fields or non-comma fields, robust for GS CSV
+                const values = lines[i].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+                
+                // Debe tener al menos 9 columnas para que los datos sean completos
+                if (!values || values.length < 9) continue; 
+
+                try {
+                    // Limpiar y parsear el precio (eliminar comillas, '$', espacios y parsear a flotante)
+                    // Usamos values[8] para el Precio (Público)
+                    const rawPrice = values[8].replace(/["$ ]/g, ''); 
+                    const price = parseFloat(rawPrice);
+
+                    if (isNaN(price)) {
+                        console.warn(`Saltando fila ${values[0]} debido a un precio inválido: ${values[8]}`);
+                        continue;
+                    }
+
+                    products.push({
+                        id: parseInt(values[0]),
+                        // Capturamos el nombre del archivo de imagen (Columna 1, Índice 1)
+                        imageUrl: values[1].replace(/"/g, '').trim(), 
+                        name: values[4].replace(/"/g, '').trim(),      // Índice 4: Nombre
+                        description: values[5].replace(/"/g, '').trim(), // Índice 5: Descripción
+                        category: values[6].replace(/"/g, '').trim(),    // Índice 6: Categoría
+                        price: price,
+                    });
+                } catch (e) {
+                    console.error("Error al parsear fila de producto:", values, e);
+                }
+            }
+            return products;
+        }
+
+        /**
+         * Renderiza la lista de productos filtrados.
+         * @param {string} category - La categoría para filtrar. 'Todos' para mostrar todos.
+         */
+        function renderProducts(category) {
+            currentFilter = category;
+            
+            // 1. Filtrar productos
+            const filteredProducts = category === 'Todos'
+                ? allProducts
+                : allProducts.filter(p => p.category === category);
+            
+            // 2. Actualizar el contador
+            productCountEl.textContent = filteredProducts.length;
+
+            // 3. Renderizar tarjetas
+            productListEl.innerHTML = filteredProducts.map(createProductCard).join('');
+            
+            // 4. Mostrar/Ocultar mensaje de no productos
+            if (filteredProducts.length === 0) {
+                noProductsMessageEl.classList.remove('hidden');
+            } else {
+                noProductsMessageEl.classList.add('hidden');
+            }
+
+            // 5. Actualizar botones de filtro
+            updateFilterButtons();
+        }
+
+        /**
+         * Crea y adjunta los botones de filtro de categoría.
+         */
+        function setupFilters() {
+            // Obtener categorías únicas
+            const categories = ['Todos', ...new Set(allProducts.map(p => p.category))].filter(c => c !== ''); // Filtra categorías vacías
+            
+            filtersEl.innerHTML = ''; // Limpiar filtros anteriores
+
+            // Crear los botones
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.textContent = category;
+                button.setAttribute('data-category', category);
+                
+                // Clases base para el botón
+                button.className = 'filter-btn px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 shadow-sm';
+                
+                // Evento click
+                button.addEventListener('click', () => renderProducts(category));
+                
+                filtersEl.appendChild(button);
+            });
+            
+            // Renderizar los productos iniciales y el estado de los botones
+            renderProducts(currentFilter);
+        }
+
+        /**
+         * Actualiza las clases de los botones para reflejar el filtro activo.
+         */
+        function updateFilterButtons() {
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                const category = button.getAttribute('data-category');
+                
+                if (category === currentFilter) {
+                    // Estilo activo (color primario fuerte)
+                    button.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-blue-300');
+                    button.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+                } else {
+                    // Estilo inactivo
+                    button.classList.remove('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+                    button.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-blue-300');
+                }
+            });
+        }
+        
+        /**
+         * Función principal para cargar el catálogo desde el CSV.
+         */
+        async function loadProductsFromCSV() {
+            // Mostrar mensaje de carga
+            productListEl.innerHTML = '<div class="col-span-full text-center p-8 text-xl text-blue-600 font-semibold">Cargando datos del catálogo...</div>';
+
+            try {
+                const response = await fetch(CSV_URL);
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+                const csvText = await response.text();
+                
+                allProducts = parseCSV(csvText);
+                
+                if (allProducts.length === 0) {
+                    productListEl.innerHTML = '<div class="col-span-full text-center p-8 text-xl text-red-500 font-semibold">Error: No se encontraron productos válidos en el archivo CSV.</div>';
+                } else {
+                    setupFilters(); // Inicializa filtros y renderiza productos con los datos cargados
+                }
+                
+            } catch (error) {
+                console.error("Error al cargar o parsear el CSV:", error);
+                productListEl.innerHTML = '<div class="col-span-full text-center p-8 text-2xl text-red-600 font-bold">Fallo al cargar el catálogo. Verifique la URL y la conexión.</div>';
+                productCountEl.textContent = '0';
+            }
+        }
+
+        // Inicializar la aplicación cuando el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', loadProductsFromCSV);
+
+    </script>
+
+</body>
+</html>

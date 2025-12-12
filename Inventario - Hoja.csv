@@ -1,0 +1,58 @@
+ID,Imagen con URL marcador de posición,image,Imagen,Nombre,Descripción,Categoría,Precio Mayorista,Precio
+1,IMG-20251212-WA0043.jpg,,,Calcetines Deportivos para Niños VI-MAS,"SPORT BOYS SOCKS, disponibles en tallas 4-6 y 8-10.",Calcetines y Medias,$35.50,$69.90
+2,IMG-20251212-WA0044.jpg,,,Medias de Tobillo para Hombre SOCMARK,"3 PAIRS, Comfort Rich, ANKLE SOCKS (calcetines de tobillo).",Calcetines y Medias,$12.75,$24.50
+3,IMG-20251212-WA0057.jpg,,,Medias de Compresión Deportivas,"Altura de la pantorrilla, diseñadas para mejorar la circulación y acelerar la recuperación muscular.",Calcetines y Medias,$55.00,$110.00
+4,IMG-20251212-WA0062.jpg,,,Calcetines de Vestir Clásicos,"Paquete de 5 pares, mezcla de algodón premium, colores oscuros surtidos, aptos para uso formal.",Calcetines y Medias,$85.20,$170.00
+5,IMG-20251212-WA0070.jpg,,,Calcetines Invisibles Ultra Low,"Set de 6 pares, diseño antideslizante en el talón, perfectos para zapatillas y mocasines.",Calcetines y Medias,$45.99,$90.00
+48,IMG-20251212-WA0022.jpg,,https://drive.google.com/file/d/1dKy2PT5wIrzrbHihJ18RxWWVmZvyKJPR/view?usp=drive_link,Cortinas Blackout con Aislamiento Térmico,"2 PIEZAS, MEDIDAS 150X250CM, con reducción de ruido 10",Cortinas,$1.20,$2.50
+6,IMG-20251212-WA0007.jpg,,,Remera Básica Cuello Redondo,"Algodón 100% peinado, corte clásico, disponible en 5 colores.",Remeras,$65.00,$125.00
+7,IMG-20251212-WA0011.jpg,,,"Remera Estampada ""Vintage Vibe""","Estampado gráfico estilo retro en el pecho, corte Slim Fit.",Remeras,$22.50,$45.00
+8,IMG-20251212-WA0012.jpg,,,Polo Piqué Clásico,"Tejido piqué transpirable, cuello y puños acanalados, logo bordado.",Remeras,$110.00,$215.00
+10,IMG-20251212-WA0064.jpg,,,Remera Larga Oversize (Unisex),"Manga larga, corte extragrande (oversize), tejido de punto suave.",Remeras,$9.50,$18.99
+11,IMG-20251212-WA0099.jpg,,,Remera Rayada Náutica,"Rayas horizontales en contraste, cuello bote, estilo marinero.",Remeras,$95.00,$185.00
+12,IMG-20251212-WA0102.jpg,,,Remera de Algodón Orgánico,"100% Algodón orgánico certificado, teñido natural, ecológica.",Remeras,$40.00,$79.99
+13,IMG-20251212-WA0104.jpg,,,Remera con Bolsillo (Pocket Tee),"Bolsillo funcional en el pecho, cuello redondo reforzado.",Remeras,$70.00,$139.99
+14,IMG-20251212-WA0109.jpg,,,Remera con Logo Minimalista,"Logo de la marca sutilmente impreso en la manga, diseño minimalista.",Remeras,$5.50,$14.99
+16,IMG-20251212-WA0112.jpg,,,Remera Henley de 3 Botones,"Cuello Henley con tapeta de tres botones, textura ligera.",Remeras,$25.00,$59.99
+21,IMG-20251212-WA0140.jpg,,,Remera de Fibra de Bambú,"Tejido suave y antibacterial de fibra de bambú, hipoalergénica.",Remeras,$15.00,$35.00
+22,IMG-20251212-WA0138.jpg,,,Remera V-Neck Suave,"Cuello en V (V-Neck), tejido extra suave para confort diario.",Remeras,$16.00,$39.99
+24,IMG-20251212-WA0139.jpg,,,Remera Lisa de Colores Brillantes,"Tono vibrante (e.g., fucsia o turquesa), ideal para verano.",Remeras,$38.00,$79.90
+9,IMG-20251212-WA0038.jpg,,,Musculosa Deportiva Dry-Fit,"Tecnología Dry-Fit para absorción de humedad, ideal para entrenamiento intenso.",Remeras (Deportiva),$15.00,$29.99
+18,IMG-20251212-WA0115.jpg,,,Remera de Malla Transpirable,"Material de malla (mesh) para máxima ventilación, estilo atlético.",Remeras (Deportiva),$20.00,$49.99
+17,IMG-20251212-WA0114.jpg,,,Remera Fluorescente Neón,"Color neón de alta visibilidad, perfecta para eventos o running nocturno.",Remeras (Especial),$30.00,$65.00
+19,IMG-20251212-WA0116.jpg,,,Remera Gráfica de Superhéroe,"Estampado a todo color de licencia (Superhéroe), corte juvenil.",Remeras (Estampada),$11.50,$28.00
+20,IMG-20251212-WA0117.jpg,,,Remera Tie-Dye (Teñido anudado),"Diseño psicodélico de teñido anudado (Tie-Dye), 100% única.",Remeras (Estampada),$40.00,$85.00
+23,IMG-20251212-WA0137.jpg,,,Camisa Tipo Leñador (Overshirt),"Tejido grueso a cuadros (flannel), abotonada, para usar sobre remera.",Remeras (Sobrecamisa),$9.00,$22.99
+15,IMG-20251212-WA0110.jpg,,,Remera Termal Manga Larga,"Tejido térmico, cuello alto, ideal como primera capa en invierno.",Remeras (Térmica),$18.00,$45.00
+25,,,,Remera con Capucha (Hooded Tee),"Diseño de remera con capucha, ideal para un look casual y urbano.",Remeras (Urbana),$14.50,$32.00
+26,IMG-20251212-WA0035.jpg,,,Boxer UOMO SPORT (Infantil/Juvenil),"Pack de Boxers deportivos, marca UOMO, talla infantil/juvenil (4-6), tejido transpirable1.",Ropa Interior,$8.50,$20.00
+27,IMG-20251212-WA0016.jpg,,,Paquete de 3 Calzoncillos Clásicos,"3 unidades, corte tradicional, 100% algodón, elástico reforzado.",Ropa Interior,$6.00,$15.00
+28,IMG-20251212-WA0018.jpg,,,Boxer Briefs de Microfibra,"Corte ajustado (Boxer Brief), microfibra elástica para máxima comodidad, sin costuras.",Ropa Interior,$32.00,$69.99
+29,IMG-20251212-WA0020.jpg,,https://drive.google.com/file/d/1Ro2wTS4Jj-q42uKrH2dlP84W7yGLilIe/view?usp=drive_link,Boxer para Mujer de Talle Alto,"Ropa interior femenina de talle alto, control ligero del abdomen, paquete doble.",Ropa Interior,$48.00,$95.00
+30,IMG-20251212-WA0023.jpg,,https://drive.google.com/file/d/14X1z2O4fdlagTzagSahKsLfUdldDgVPc/view?usp=drive_link,Bikini Clásico Algodón (Femenino),"Pack de 6 unidades, estilo bikini clásico, algodón suave y colores básicos.",Ropa Interior,$150.00,$299.00
+31,IMG-20251212-WA0026.jpg,,https://drive.google.com/file/d/1hmMn6xtlBP5MstF6Bi-iwXeZAjWhuZKT/view?usp=drive_link,Sostén Deportivo High Impact,"Soporte alto impacto, ideal para fitness y running, tirantes ajustables.",Ropa Interior,$15.00,$30.00
+32,IMG-20251212-WA0029.jpg,,https://drive.google.com/file/d/1mYi8KAfiTJltSRUf6s85RkNPovZMkMyx/view?usp=drive_link,Sostén Básico con Aros,"Diseño con aros y copa preformada, cobertura completa, cómodo para uso diario.",Ropa Interior,$90.00,$179.99
+33,IMG-20251212-WA0033.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0067.jpg,Paquete de 5 Tanga de Encaje,"Set de 5 tangas de encaje, diseño sexy y ligero, ideal para ocasiones especiales.",Ropa Interior,$25.00,$49.90
+34,IMG-20251212-WA0036.jpg,,https://drive.google.com/file/d/1DKjNJQZy9v-7v-ZtJ7CIiJR1OOf7MeCX/view?usp=drive_link,Boxer de Bambú Hipoalergénico,"Tejido de fibra de bambú, propiedades antibacterianas e hipoalergénicas, confort superior.",Ropa Interior,$18.00,$37.50
+35,IMG-20251212-WA0037.jpg,,https://drive.google.com/file/d/18xcF4-wtCDyLWKQ1AFgc1TPRDvnI3IaO/view?usp=drive_link,Camiseta Interior (Undershirt),"Camiseta interior de algodón, cuello en V, ideal para usar debajo de camisas.",Ropa Interior,$40.00,$85.00
+36,IMG-20251212-WA0040.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0065.jpg,Lencería de Malla (Mesh),"Pieza de lencería de diseño atrevido, tejido de malla transparente.",Ropa Interior,$20.00,$45.00
+37,IMG-20251212-WA0054.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0035.jpg,Boxer Termal Invierno,"Boxer de tejido térmico, ideal para climas fríos, aislamiento y calidez.",Ropa Interior,$10.00,$22.00
+38,IMG-20251212-WA0068.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0016.jpg,Bralette sin Aros,"Sostén estilo bralette, sin aros, máxima comodidad y estilo moderno.",Ropa Interior,$7.50,$15.00
+39,IMG-20251212-WA0071.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0018.jpg,Boxer Juvenil con Estampado Funky,"Boxer con diseños o estampados divertidos, enfocado en el mercado juvenil.",Ropa Interior,$19.99,$39.99
+40,IMG-20251212-WA0058.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0020.jpg,Juego de Sábanas Super King,"4 Piezas, 1500 HILOS, Colección CASATEX® 2",Sábanas (Adulto),$15.50,$35.00
+41,IMG-20251212-WA0063.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0023.jpg,Juego de Sábanas Queen,"4 Piezas, 1500 HILOS, Colección CASATEX®, 35cm alto de colchón 3",Sábanas (Adulto),$8.50,$17.00
+42,IMG-20251212-WA0009.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0026.jpg,Juego de Sábanas FULL Premium,"4 Piezas, 5500 HILOS, 100% ALGODÓN, 45cm alto de colchón 4",Sábanas (Adulto),$6.00,$12.99
+43,IMG-20251212-WA0048.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0029.jpg,Juego de Sábanas Twin (1500 HILOS),"3 Piezas, 1500 HILOS, Colección CASATEX® 5",Sábanas (Adulto),$4.20,$8.50
+44,IMG-20251212-WA0067.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0033.jpg,Juego de Sábanas Twin (3500 HILOS),"3 Piezas, 3500 Hilos, 100% Algodón, ULTRA SUAVE, marca GOLDSUN 6",Sábanas (Adulto),$1.50,$3.50
+45,IMG-20251212-WA0056.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0036.jpg,Juego de Sábanas KING con Fragancia,"3000 HILOS, 100% ALGODON con fragancia, 45cm alto de colchón 7",Sábanas (Adulto),$7.00,$14.00
+46,IMG-20251212-WA0006.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0037.jpg,Juego de Sábanas Infantil Licencias Clásicas,"SET 3 PCS, TAMAÑO TWIN, 100% ALGODÓN (Licencias: Princesses, Frozen, Minnie) 8",Sábanas (Infantil),$2.50,$5.99
+47,IMG-20251212-WA0065.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0040.jpg,Juego de Sábanas Infantil Licencias Modernas,"SET 3 PCS, TAMAÑO TWIN, 100% NO DESTIÑE (Licencias: Sonic, Paw Patrol, Spider-Man) 9",Sábanas (Infantil),$3.80,$7.50
+49,IMG-20251212-WA0014.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0054.jpg,Zapatillas Running Ultraligeras,"Amortiguación de gel, malla transpirable, ideales para maratón y larga distancia.",Zapatillas,$5.50,$11.50
+50,IMG-20251212-WA0028.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0068.jpg,Zapatillas Urbanas de Cuero,"Diseño casual y minimalista en cuero sintético, suela de goma plana y resistente.",Zapatillas,$9.00,$18.99
+51,IMG-20251212-WA0030.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0071.jpg,Calzado Deportivo para Training,"Suela con agarre multidireccional, soporte lateral, aptas para cross-training y gimnasio.",Zapatillas,$2.10,$4.50
+52,IMG-20251212-WA0051.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0014.jpg,Zapatillas de Baloncesto High Top,"Corte alto para soporte de tobillo, amortiguación responsiva, diseño exclusivo.",Zapatillas,$2.99,$6.00
+53,IMG-20251212-WA0061.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0028.jpg,Zapatillas de Senderismo Impermeables,"Membrana impermeable, suela dentada (tacos) para tracción en terrenos irregulares.",Zapatillas,$7.00,$14.00
+54,IMG-20251212-WA0069.jpg,,https://placeholder.com/imagen?file=IMG-20251212-WA0030.jpg,Zapatillas Clásicas de Lona,"Estilo atemporal, tejido de lona resistente, puntera de goma, unisex.",Zapatillas,$3.00,$6.50
+,,,https://placeholder.com/imagen?file=IMG-20251212-WA0051.jpg,,,,,
+,,,https://placeholder.com/imagen?file=IMG-20251212-WA0061.jpg,,,,,
+,,,https://placeholder.com/imagen?file=IMG-20251212-WA0069.jpg,,,,,
