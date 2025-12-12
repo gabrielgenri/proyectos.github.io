@@ -8,61 +8,60 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Fuente Inter para un estilo moderno */
+        /* Estilos generales y fuente Inter */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Gris claro de fondo */
+            background-color: #f3f4f6; /* Fondo gris claro */
         }
-        /* Estilos personalizados para el contenedor principal */
+        /* Definición de la cuadrícula de productos */
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem; /* Separación entre tarjetas */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
-        /* Limitar la descripción a 3 líneas (para mantener la consistencia del grid) */
+        /* Estilo para el hover de las tarjetas (elevación sutil) */
+        .shadow-lg:hover {
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1), 0 6px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+        /* Limitar la descripción a 3 líneas */
         .line-clamp-3 {
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        /* Elevación sutil en hover para las tarjetas */
-        .card-hover:hover {
-            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1), 0 6px 15px -3px rgba(0, 0, 0, 0.05);
-        }
     </style>
 </head>
 <body class="min-h-screen">
 
-    <!-- Encabezado Fijo (Color Primario: Azul) -->
-    <header class="bg-blue-600 shadow-lg sticky top-0 z-10">
+    <!-- Encabezado Fijo -->
+    <header class="bg-blue-600 shadow-xl sticky top-0 z-10">
         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center">
-            <h1 class="text-3xl font-extrabold text-white mb-2 sm:mb-0">
-                Catálogo de Inventario
-            </h1>
-            <span class="text-white text-lg font-medium opacity-80 p-2 bg-blue-700/50 rounded-lg">
+            <h1 class="text-3xl font-extrabold text-white mb-2 sm:mb-0">Catálogo de Inventario</h1>
+            <span class="text-white text-lg font-medium opacity-90 p-2 bg-blue-700/50 rounded-lg">
                 Total de Productos: <span id="product-count" class="font-bold text-yellow-300">0</span>
             </span>
         </div>
     </header>
 
+    <!-- Contenido Principal -->
     <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         
-        <!-- Sección de Filtros por Categoría -->
+        <!-- Sección de Filtros -->
         <section class="mb-8 p-6 bg-white rounded-2xl shadow-xl border border-gray-100">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-3">Filtrar por Categoría</h2>
             <div id="category-filters" class="flex flex-wrap gap-3">
-                <!-- Los botones de filtro se insertarán aquí por JavaScript -->
+                <!-- Los botones de filtro se inyectarán aquí por JS -->
             </div>
         </section>
 
-        <!-- Contenedor del Catálogo de Productos -->
+        <!-- Lista de Productos -->
         <section id="product-list" class="product-grid">
             <div class="col-span-full text-center p-8 text-xl text-blue-600 font-semibold">Cargando datos del catálogo...</div>
-            <!-- El mensaje de carga o las tarjetas de productos se mostrarán aquí -->
+            <!-- Las tarjetas de productos se inyectarán aquí por JS -->
         </section>
 
-        <!-- Mensaje si no hay productos -->
+        <!-- Mensaje de No Productos Encontrados -->
         <div id="no-products-message" class="hidden text-center p-12 bg-white rounded-2xl shadow-xl mt-8 border border-red-100">
             <svg class="mx-auto h-12 w-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             <p class="text-2xl text-gray-600 font-semibold mt-4">
@@ -73,198 +72,55 @@
 
     </main>
 
+    <!-- Script de Lógica -->
     <script>
-        // URL Pública del archivo CSV de GitHub (Usando la URL raw)
-        const CSV_URL = 'https://raw.githubusercontent.com/gabrielgenri/proyectos.github.io/genri/Inventario%20-%20Hoja.csv';
+        // Esta URL apunta a la hoja de cálculo de Google publicada como CSV
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ_VH8OtN4MiVPnU5DMYhi9mXlg2nlOTHd7z5kdWF_gkvg_nEUIUYk5Ra5_t2wilmYq8MIrbow05RWt/pub?gid=1431743291&single=true&output=csv";
         
-        let allProducts = []; // Array que almacenará los productos cargados
-        let currentFilter = 'Todos';
-
-        // Referencias a elementos del DOM
+        let allProducts = [];
         const productListEl = document.getElementById('product-list');
         const filtersEl = document.getElementById('category-filters');
         const productCountEl = document.getElementById('product-count');
         const noProductsMessageEl = document.getElementById('no-products-message');
-        
-        /**
-         * Crea el HTML para una tarjeta de producto.
-         * @param {Object} product - Objeto de producto.
-         * @returns {string} HTML de la tarjeta.
-         */
-        function createProductCard(product) {
-            // Generar un texto limpio para el placeholder. Usamos el nombre del producto como texto.
-            const placeholderText = product.name ? encodeURIComponent(product.name.substring(0, 25).trim()) : 'Producto';
-            const placeholderUrl = `https://placehold.co/400x300/1e40af/ffffff?text=${placeholderText}`; // Fondo azul primario
+        let currentFilter = 'Todos';
 
-            return `
-                <div class="bg-white rounded-xl shadow-lg card-hover transition-all duration-300 overflow-hidden flex flex-col transform hover:-translate-y-1 border border-gray-100">
-                    <!-- Imagen del Producto (Placeholder) -->
-                    <div class="h-48 bg-gray-100 overflow-hidden flex items-center justify-center">
-                        <img 
-                            src="${placeholderUrl}" 
-                            alt="Imagen de ${product.name}" 
-                            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                            onerror="this.onerror=null; this.src='https://placehold.co/400x300/e5e7eb/6b7280?text=Imagen+No+Disp.'; this.classList.remove('hover:scale-105');"
-                        >
-                    </div>
-                    
-                    <div class="p-6 flex flex-col flex-grow">
-                        <!-- Nombre del Producto -->
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">${product.name}</h3>
-                        
-                        <!-- Categoría (Etiqueta) -->
-                        <span class="inline-block self-start bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mb-3 shadow-sm">
-                            ${product.category}
-                        </span>
-                        
-                        <!-- Descripción -->
-                        <p class="text-gray-600 text-sm mb-4 flex-grow line-clamp-3">${product.description}</p>
-                        
-                        <!-- Precio al Público -->
-                        <div class="pt-4 border-t border-gray-100 mt-auto flex justify-between items-center">
-                            <div>
-                                <p class="text-3xl font-black text-blue-600">
-                                    $${product.price.toFixed(2)} USD
-                                </p>
-                                <p class="text-sm text-gray-500 mt-1">Precio al Público</p>
-                            </div>
-                            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors duration-200 shadow-md">
-                                Comprar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
         /**
-         * Parses CSV text into an array of product objects.
-         * Column Indices (0-based) based on the provided CSV structure:
-         * Index 4: Nombre
-         * Index 5: Descripción
-         * Index 6: Categoría
-         * Index 8: Precio (Precio al Público)
+         * Convierte texto CSV en un arreglo de objetos.
+         * Maneja comillas y diferentes formatos de terminación de línea.
          */
         function parseCSV(csvText) {
-            const lines = csvText.trim().split(/\r?\n/);
-            if (lines.length <= 1) return []; 
+            const lines = csvText.trim().split('\n');
+            if (lines.length < 2) return [];
+            
+            // Regex robusta para dividir por comas, excepto si están dentro de comillas
+            // Esto es crucial para manejar campos de descripción con comas internas.
+            const splitRegex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
 
-            const products = [];
-            // Expresión regular para dividir el CSV: maneja campos entre comillas que contienen comas.
-            const splitRegex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
+            // Limpiar y obtener los encabezados
+            const headerLine = lines[0];
+            const headers = headerLine.split(splitRegex).map(h => h.trim().replace(/^"|"$/g, ''));
+            
+            const dataLines = lines.slice(1);
 
-            for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].match(splitRegex);
+            return dataLines.map(line => {
+                const values = line.split(splitRegex);
+                let obj = {};
+                // Función de limpieza: elimina espacios, comillas iniciales/finales y retornos de carro.
+                const cleanValue = (val) => (val || '').trim().replace(/^"|"$/g, '').replace(/[\r]/g, ''); 
                 
-                // Asegurar que tenemos suficientes columnas (9 columnas en total, índice 0 a 8)
-                if (!values || values.length < 9) continue; 
-
-                try {
-                    // Obtener Precio al Público (Índice 8)
-                    const rawPrice = (values[8] || '0').replace(/["$ ]/g, ''); 
-                    // Usamos replace(/\./g, '') para eliminar puntos de miles y luego replace(/,/g, '.') para manejar el decimal si usa coma.
-                    // Asumiendo que el formato es $XX.XX o $XX,XX
-                    const normalizedPrice = rawPrice.replace(/\./g, '').replace(/,/g, '.'); 
-                    const price = parseFloat(normalizedPrice);
-
-                    // Obtener la URL del marcador de posición (Índice 1)
-                    const rawImageUrl = (values[1] || '').replace(/"/g, '').trim(); 
-                    
-                    if (isNaN(price) || !values[4].trim()) {
-                        continue; // Ignorar filas con precio o nombre inválido
-                    }
-
-                    products.push({
-                        id: parseInt(values[0]) || i,
-                        imageUrl: rawImageUrl, 
-                        name: (values[4] || '').replace(/"/g, '').trim(),      // Índice 4: Nombre
-                        description: (values[5] || '').replace(/"/g, '').trim(), // Índice 5: Descripción
-                        category: (values[6] || '').replace(/"/g, '').trim(),    // Índice 6: Categoría
-                        price: price,
-                    });
-                } catch (e) {
-                    console.error("Error al parsear fila de producto:", values, e);
-                }
-            }
-            return products;
+                headers.forEach((h, i) => { 
+                    obj[h] = cleanValue(values[i]); 
+                });
+                return obj;
+            }).filter(obj => obj.Nombre); // Filtrar filas donde el campo "Nombre" esté vacío
         }
 
         /**
-         * Renderiza la lista de productos filtrados.
-         * @param {string} category - La categoría para filtrar. 'Todos' para mostrar todos.
+         * Carga el CSV desde Google Sheets y arma allProducts[]
+         * Implementa reintentos con backoff exponencial.
          */
-        function renderProducts(category) {
-            currentFilter = category;
-            
-            // 1. Filtrar productos
-            const filteredProducts = category === 'Todos'
-                ? allProducts
-                : allProducts.filter(p => p.category === category);
-            
-            // 2. Actualizar el contador
-            productCountEl.textContent = filteredProducts.length;
-
-            // 3. Renderizar tarjetas
-            productListEl.innerHTML = filteredProducts.map(createProductCard).join('');
-            
-            // 4. Mostrar/Ocultar mensaje de no productos
-            noProductsMessageEl.classList.toggle('hidden', filteredProducts.length > 0);
-
-            // 5. Actualizar botones de filtro
-            updateFilterButtons();
-        }
-
-        /**
-         * Crea y adjunta los botones de filtro de categoría.
-         */
-        function setupFilters() {
-            // Obtener categorías únicas, incluyendo 'Todos'
-            const categories = ['Todos', ...new Set(allProducts.map(p => p.category).filter(c => c))];
-            
-            filtersEl.innerHTML = ''; // Limpiar filtros anteriores
-
-            // Crear los botones
-            categories.forEach(category => {
-                const button = document.createElement('button');
-                button.textContent = category;
-                button.setAttribute('data-category', category);
-                
-                // Clases base para el botón
-                button.className = 'filter-btn px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 shadow-md whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50';
-                
-                // Evento click
-                button.addEventListener('click', () => renderProducts(category));
-                
-                filtersEl.appendChild(button);
-            });
-            
-            // Renderizar los productos iniciales
-            renderProducts(currentFilter);
-        }
-
-        /**
-         * Actualiza las clases de los botones para reflejar el filtro activo.
-         */
-        function updateFilterButtons() {
-            document.querySelectorAll('.filter-btn').forEach(button => {
-                const category = button.getAttribute('data-category');
-                
-                if (category === currentFilter) {
-                    // Estilo activo (Azul)
-                    button.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-blue-300');
-                    button.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-700');
-                } else {
-                    // Estilo inactivo (Gris)
-                    button.classList.remove('bg-blue-600', 'text-white', 'hover:bg-blue-700');
-                    button.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-blue-300');
-                }
-            });
-        }
-        
-        /**
-         * Función principal para cargar el catálogo desde el CSV con reintentos.
-         */
-        async function loadProductsFromCSV() {
+        async function loadProducts() {
+            // Mostrar mensaje de carga
             productListEl.innerHTML = '<div class="col-span-full text-center p-8 text-xl text-blue-600 font-semibold">Cargando datos del catálogo...</div>';
 
             const maxRetries = 3;
@@ -275,33 +131,153 @@
                         throw new Error(`Error HTTP: ${response.status}`);
                     }
                     const csvText = await response.text();
-                    
-                    allProducts = parseCSV(csvText);
-                    
-                    if (allProducts.length === 0) {
-                        productListEl.innerHTML = '<div class="col-span-full text-center p-8 text-xl text-red-500 font-semibold">Error: No se encontraron productos válidos en el archivo CSV.</div>';
-                        productCountEl.textContent = '0';
-                    } else {
-                        setupFilters(); 
-                    }
-                    return; // Salir del bucle si es exitoso
-                    
+                    const rows = parseCSV(csvText);
+
+                    // Mapear filas a la estructura de producto esperada, priorizando los campos según el CSV
+                    allProducts = rows.map(row => {
+                        // Priorizar la columna 'Imagen' para la URL, luego 'image'
+                        const imageUrlField = row["Imagen"] || row["image"] || ""; 
+                        // Priorizar la columna 'Precio' (Precio Público) o 'Precio Público (USD)'
+                        const rawPrice = row["Precio"] || row["Precio Público (USD)"] || ''; 
+
+                        return {
+                            id: Number(row["ID"]) || 0,
+                            name: row["Nombre"] || "Producto Desconocido",
+                            description: row["Descripción"] || "Sin descripción disponible.",
+                            category: row["Categoría"] || "General",
+                            // Limpiamos el precio de símbolos ($,) y lo parseamos
+                            price: parseFloat(rawPrice.replace(/[$,]/g, '')) || 0, 
+                            // Solo usar la URL si es un enlace HTTP válido (asumiendo que las URLs en el CSV empiezan con http)
+                            imageUrl: imageUrlField.startsWith('http') ? imageUrlField : ""
+                        };
+                    }).filter(p => p.name !== "Producto Desconocido");
+
+                    setupFilters();
+                    // Salir del bucle si la carga es exitosa
+                    return; 
+
                 } catch (error) {
-                    console.error(`Intento ${attempt + 1} fallido al cargar CSV:`, error);
+                    // console.error(`Intento ${attempt + 1} fallido al cargar CSV:`, error); // No loguear retries
                     if (attempt < maxRetries - 1) {
-                        const delay = Math.pow(2, attempt) * 1000;
+                        const delay = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s
                         await new Promise(resolve => setTimeout(resolve, delay));
                     } else {
-                        productListEl.innerHTML = `<div class="col-span-full text-center p-8 text-2xl text-red-600 font-bold bg-red-100 rounded-xl">Fallo al cargar el catálogo. Verifique la URL y la conexión. (${error.message})</div>`;
-                        productCountEl.textContent = '0';
+                        // Después del último intento fallido
+                        productListEl.innerHTML = `<div class="col-span-full text-center p-8 bg-red-100 rounded-xl">
+                            <p class="text-xl text-red-700 font-semibold">
+                                Error al cargar los datos. Por favor, verifica la URL del CSV o la estructura de la hoja de cálculo.
+                            </p>
+                            <p class="text-sm text-red-500 mt-2">Detalle: ${error.message}</p>
+                        </div>`;
+                        productCountEl.textContent = 'N/A';
                     }
                 }
             }
         }
 
-        // Inicializar la aplicación
-        document.addEventListener('DOMContentLoaded', loadProductsFromCSV);
+        /**
+         * Genera la estructura HTML para una tarjeta de producto.
+         */
+        function createProductCard(product) {
+            // Generar URL de placeholder dinámico con el nombre del producto
+            const placeholderText = product.name ? encodeURIComponent(product.name.substring(0, 20).trim()) : 'Producto';
+            const fallbackUrl = `https://placehold.co/400x300/1e40af/ffffff?text=${placeholderText}`;
+            
+            // Usar la URL de la hoja o el placeholder si está vacía
+            const imageUrl = product.imageUrl || fallbackUrl;
 
+            return `
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col transform hover:-translate-y-1 border border-gray-100">
+                    <div class="h-48 bg-gray-100 overflow-hidden flex items-center justify-center">
+                        <img 
+                            src="${imageUrl}"
+                            alt="Imagen de ${product.name}"
+                            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                            onerror="this.onerror=null; this.src='https://placehold.co/400x300/e5e7eb/6b7280?text=Imagen+No+Disp.'; this.classList.remove('hover:scale-105');"
+                        >
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-extrabold text-gray-900 mb-2">${product.name}</h3>
+                        <span class="inline-block self-start bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full mb-3 shadow-sm">
+                            ${product.category}
+                        </span>
+                        <p class="text-gray-600 text-sm mb-4 flex-grow line-clamp-3">${product.description}</p>
+                        <div class="pt-4 border-t border-gray-100 mt-auto flex justify-between items-center">
+                            <div>
+                                <p class="text-3xl font-black text-blue-600">
+                                    $${product.price.toFixed(2)} USD
+                                </p>
+                                <p class="text-sm text-gray-500 mt-1">Precio</p>
+                            </div>
+                            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors duration-200 shadow-md">
+                                Ver Detalle
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        /**
+         * Filtra y renderiza los productos en la vista.
+         */
+        function renderProducts(category) {
+            currentFilter = category;
+            const filtered = category === 'Todos'
+                ? allProducts
+                : allProducts.filter(p => p.category === category);
+
+            productCountEl.textContent = filtered.length;
+            productListEl.innerHTML = filtered.map(createProductCard).join('');
+
+            // Muestra u oculta el mensaje de "No productos"
+            noProductsMessageEl.classList.toggle('hidden', filtered.length > 0);
+            updateFilterButtons();
+        }
+
+        /**
+         * Crea y añade los botones de filtro al DOM.
+         */
+        function setupFilters() {
+            // Asegúrate de que 'Todos' sea la primera opción
+            const categories = ['Todos', ...new Set(allProducts.map(p => p.category).filter(c => c))];
+            filtersEl.innerHTML = "";
+            
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.textContent = category;
+                button.setAttribute('data-category', category);
+                button.className = 'filter-btn px-4 py-2 rounded-full font-semibold text-sm transition-all duration-200 shadow-md whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50';
+                
+                // Función para manejar el clic y re-renderizar
+                button.addEventListener('click', () => renderProducts(category));
+                filtersEl.appendChild(button);
+            });
+
+            // Iniciar la renderización con el filtro actual ('Todos' por defecto)
+            renderProducts(currentFilter);
+        }
+
+        /**
+         * Actualiza el estilo de los botones para indicar el filtro activo.
+         */
+        function updateFilterButtons() {
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                const cat = button.getAttribute('data-category');
+                if (cat === currentFilter) {
+                    // Estilo Activo: Azul con texto blanco
+                    button.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+                    button.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+                } else {
+                    // Estilo Inactivo: Gris claro con texto gris oscuro
+                    button.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+                    button.classList.remove('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+                }
+            });
+        }
+
+        // Cargar los productos tan pronto como el DOM esté listo
+        document.addEventListener("DOMContentLoaded", loadProducts);
     </script>
 
 </body>
