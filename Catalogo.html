@@ -147,8 +147,8 @@
                             category: row["Categoría"] || "General",
                             // Limpiamos el precio de símbolos ($,) y lo parseamos
                             price: parseFloat(rawPrice.replace(/[$,]/g, '')) || 0, 
-                            // Solo usar la URL si es un enlace HTTP válido (asumiendo que las URLs en el CSV empiezan con http)
-                            imageUrl: imageUrlField.startsWith('https') ? imageUrlField : ""
+                            // Solo usar la URL si es un enlace HTTP válido (asumiendo que las URLs en el CSV empiezan con http)  imageUrl: imageUrlField.startsWith('https') ? imageUrlField : ""
+                            imageUrl: imageUrlField ? imageUrlField : ""
                         };
                     }).filter(p => p.name !== "Producto Desconocido");
 
@@ -282,4 +282,5 @@
 
 </body>
 </html>
+
 
