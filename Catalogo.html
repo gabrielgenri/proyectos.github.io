@@ -145,7 +145,7 @@
                             name: row["Nombre"] || "Producto Desconocido",
                             description: row["Descripción"] || "Sin descripción disponible.",
                             category: row["Categoría"] || "General",
-                            image = row["Imagen"] || "Producto Desconocido",
+                            foto = row["Imagen"] || "Desconocido",
                             // Limpiamos el precio de símbolos ($,) y lo parseamos
                             price: parseFloat(rawPrice.replace(/[$,]/g, '')) || 0, 
                             // Solo usar la URL si es un enlace HTTP válido (asumiendo que las URLs en el CSV empiezan con http)   imageUrl: imageUrlField ? imageUrlField : ""
@@ -183,7 +183,7 @@
         function createProductCard(product) {
             // Generar URL de placeholder dinámico con el nombre del producto
             const placeholderText = product.name ? encodeURIComponent(product.name.substring(0, 20).trim()) : 'Producto';
-            const fallbackUrl = `image?text=${placeholderText}`;
+            const fallbackUrl = `prduct.foto?text=${placeholderText}`;
  
             
             // Usar la URL de la hoja o el placeholder si está vacía
@@ -285,6 +285,7 @@
 
 </body>
 </html>
+
 
 
 
