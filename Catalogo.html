@@ -39,7 +39,7 @@
         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center">
             <h1 class="text-3xl font-extrabold text-white mb-2 sm:mb-0">Catálogo</h1>
             <span class="text-white text-lg font-medium opacity-90 p-2 bg-blue-700/50 rounded-lg">
-               Productos: <span id="product-count" class="font-bold text-yellow-300">0</span>
+                Productos: <span id="product-count" class="font-bold text-yellow-300">0</span>
             </span>
         </div>
     </header>
@@ -72,6 +72,19 @@
 
     </main>
 
+    <!-- Modal de Imagen a Pantalla Completa (NUEVA ESTRUCTURA) -->
+    <div id="image-modal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-90 flex justify-center items-center p-4" onclick="closeImageModal()">
+        <div class="relative max-w-5xl w-full h-full flex justify-center items-center" onclick="event.stopPropagation()">
+            <!-- Botón de Cerrar -->
+            <button onclick="closeImageModal()" class="absolute top-4 right-4 text-white text-4xl font-light hover:text-red-400 transition duration-200 z-50 p-2 bg-black/50 rounded-full w-12 h-12 flex items-center justify-center shadow-lg" aria-label="Cerrar Imagen">
+                &times;
+            </button>
+            <!-- Contenedor de Imagen -->
+            <img id="modal-image" src="" alt="Imagen de Producto Ampliada" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
+        </div>
+    </div>
+    <!-- FIN Modal de Imagen -->
+
     <!-- Script de Lógica -->
     <script>
         // Esta URL apunta a la hoja de cálculo de Google publicada como CSV
@@ -82,6 +95,8 @@
         const filtersEl = document.getElementById('category-filters');
         const productCountEl = document.getElementById('product-count');
         const noProductsMessageEl = document.getElementById('no-products-message');
+        const imageModalEl = document.getElementById('image-modal');
+        const modalImageEl = document.getElementById('modal-image');
         let currentFilter = 'Todos';
 
         /**
@@ -93,7 +108,6 @@
             if (lines.length < 2) return [];
             
             // Regex robusta para dividir por comas, excepto si están dentro de comillas
-            // Esto es crucial para manejar campos de descripción con comas internas.
             const splitRegex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
 
             // Limpiar y obtener los encabezados
@@ -147,8 +161,8 @@
                             category: row["Categoría"] || "General",
                             // Limpiamos el precio de símbolos ($,) y lo parseamos
                             price: parseFloat(rawPrice.replace(/[$,]/g, '')) || 0, 
-                            // Solo usar la URL si es un enlace HTTP válido (asumiendo que las URLs en el CSV empiezan con http)   imageUrl: imageUrlField ? imageUrlField : ""
-                             imageUrl: imageUrlField.startsWith('http') ? imageUrlField : ""
+                            // Solo usar la URL si es un enlace HTTP válido (asumiendo que las URLs en el CSV empiezan con http) 
+                            imageUrl: imageUrlField.startsWith('http') ? imageUrlField : ""
                         };
                     }).filter(p => p.name !== "Producto Desconocido");
 
@@ -157,7 +171,6 @@
                     return; 
 
                 } catch (error) {
-                    // console.error(`Intento ${attempt + 1} fallido al cargar CSV:`, error); // No loguear retries
                     if (attempt < maxRetries - 1) {
                         const delay = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s
                         await new Promise(resolve => setTimeout(resolve, delay));
@@ -176,26 +189,30 @@
         }
 
         /**
-         * Genera la estructura HTML para una tarjeta de producto.         //const fallbackUrl = `https://placehold.co/400x300/1e40af/ffffff?text=${placeholderText}`;
+         * Genera la estructura HTML para una tarjeta de producto.
          */
         function createProductCard(product) {
             // Generar URL de placeholder dinámico con el nombre del producto
             const placeholderText = product.name ? encodeURIComponent(product.name.substring(0, 20).trim()) : 'Producto';
             const fallbackUrl = `https://placehold.co/400x300/1e40af/ffffff?text=${placeholderText}`;
- 
             
-            // Usar la URL de la hoja o el placeholder si está vacía
-            const imageUrl = product.imageUrl || fallbackUrl;
-            const image = product.imageUrl;
+            // La URL para mostrar (puede ser la real o el fallback)
+            const displayUrl = product.imageUrl || fallbackUrl; 
+            // La URL real del producto (solo se usa si es válida)
+            const dataImageUrl = product.imageUrl; 
+
+            // Aseguramos que la URL pasada al onclick esté limpia de comillas conflictivas
+            const cleanClickUrl = dataImageUrl.replace(/'/g, "\\'");
 
             return `
                 <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col transform hover:-translate-y-1 border border-gray-100">
                     <div class="h-48 bg-gray-100 overflow-hidden flex items-center justify-center">
                         <img 
-                            src="${imageUrl}"
+                            onclick="openImageModal('${cleanClickUrl}')"
+                            src="${displayUrl}"
                             alt="Imagen de ${product.name}"
-                            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                            onerror="this.onerror=null; this.src='https://placehold.co/400x300/1e40af?text=Imagen+No+Disp.'; this.classList.remove('hover:scale-105');"
+                            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105 ${dataImageUrl ? 'cursor-pointer' : ''}"
+                            onerror="this.onerror=null; this.src='https://placehold.co/400x300/1e40af?text=Imagen+No+Disp.'; this.classList.remove('hover:scale-105'); this.classList.remove('cursor-pointer');"
                         >
                     </div>
                     <div class="p-6 flex flex-col flex-grow">
@@ -206,18 +223,14 @@
                         <p class="text-gray-600 text-sm mb-4 flex-grow line-clamp-3">${product.description}</p>
                         <div class="pt-4 border-t border-gray-100 mt-auto flex justify-between items-center">
                             <div>
-                            
                                 <p class="text-3xl font-black text-blue-600">
                                     $${product.price.toFixed(2)} 
                                 </p>
                                 <p class="text-sm text-gray-500 mt-1">Precio</p>
-                             
                             </div>
-                           
                         </div>
                     </div>
                 </div>
-                 
             `;
         }
 
@@ -279,32 +292,42 @@
             });
         }
 
+        // --- Funciones del Modal de Imagen ---
+
+        /**
+         * Abre el modal de imagen a pantalla completa.
+         * @param {string} url La URL de la imagen a mostrar.
+         */
+        function openImageModal(url) {
+            // Verificamos que la URL sea válida (se filtra en loadProducts para ser http/https o vacía)
+            if (!url) {
+                console.log("No se puede ampliar la imagen: URL no válida o es un placeholder.");
+                return;
+            }
+            
+            // Configurar y mostrar el modal
+            modalImageEl.src = ''; // Limpiar la imagen anterior
+            modalImageEl.alt = 'Imagen ampliada';
+            imageModalEl.classList.remove('hidden');
+            
+            // Cargar la imagen real
+            modalImageEl.src = url;
+        }
+
+        /**
+         * Cierra el modal de imagen a pantalla completa.
+         */
+        function closeImageModal() {
+            imageModalEl.classList.add('hidden');
+            modalImageEl.src = ''; // Limpiar la fuente al cerrar
+            modalImageEl.alt = '';
+        }
+
+        // --- Inicialización ---
+
         // Cargar los productos tan pronto como el DOM esté listo
         document.addEventListener("DOMContentLoaded", loadProducts);
     </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
