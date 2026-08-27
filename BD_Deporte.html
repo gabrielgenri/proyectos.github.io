@@ -86,20 +86,19 @@
                 </div>
                 <div>
                     <h1 class="font-bold text-slate-900 text-base md:text-lg leading-tight">Mesa de Barrios Populares</h1>
-                    <p class="text-xs text-purple-700 font-semibold">Registro Comunitario de Adhesiones - La Rioja</p>
-                </div>
+                                   </div>
             </div>
 
             <!-- NAVEGACIÓN PÚBLICA -->
             <nav class="hidden md:flex items-center space-x-1 text-xs font-bold">
                 <button id="nav-btn-hero" onclick="switchPublicTab('hero')" class="px-3.5 py-2 rounded-lg text-purple-800 bg-purple-50 transition">
-                    Inicio y Principios
+                    Inicio
                 </button>
                 <button id="nav-btn-stats" onclick="switchPublicTab('stats')" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-purple-800 hover:bg-slate-100 transition">
-                    Estadísticas Barriales
+                    Estadísticas
                 </button>
                 <button id="nav-btn-form" onclick="switchPublicTab('form')" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-purple-800 hover:bg-slate-100 transition">
-                    Registrar Adhesión
+                    Registrar
                 </button>
             </nav>
 
@@ -1679,10 +1678,106 @@
             document.getElementById('detail-modal').classList.add('hidden');
         }
 
-        function printSingleAdhesion() {
-            closeDetailModal();
-            window.print();
-        }
+       function printSingleAdhesion(id = currentSelectedAdhesionId) {
+    // 1. Obtener la adhesión desde la lista global
+    const ad = adhesiones.find(a => a.id === id);
+    if (!ad) {
+        showToast("No se encontró la adhesión seleccionada.", "error");
+        return;
+    }
+
+    // 2. Normalizar la lista de vecinos adheridos con la estructura real (adherentes)
+    const listaVecinos = Array.isArray(ad.adherentes) ? ad.adherentes : [];
+    const referente = ad.referente || {};
+
+    // 3. Crear el contenedor temporal de impresión optimizado para estilos del documento
+    const printArea = document.createElement('div');
+    printArea.id = 'print-single-container';
+    printArea.className = 'fixed inset-0 bg-white z-50 p-8 overflow-y-auto print-only';
+
+    // 4. Construir las filas HTML de los vecinos adheridos
+    const vecinosHTML = listaVecinos.map((v, i) => `
+        <tr class="border-b border-slate-200">
+            <td class="p-2 text-center font-bold text-slate-500">${i + 1}</td>
+            <td class="p-2 font-semibold text-slate-800">${escapeHtml(v.nombre || '-')}</td>
+            <td class="p-2 text-center text-slate-600">${escapeHtml(v.dni || '-')}</td>
+            <td class="p-2 text-center text-slate-600">${escapeHtml(v.telefono || '-')}</td>
+        </tr>
+    `).join('');
+
+    // 5. Inyectar la plantilla HTML formal para la impresión
+    printArea.innerHTML = `
+        <div style="font-family: sans-serif;" class="max-w-2xl mx-auto space-y-6 text-slate-800">
+            <div class="border-b-2 border-purple-800 pb-4 text-center">
+                <span class="text-xs font-bold text-purple-800 uppercase tracking-widest block mb-1">
+                    Mesa de Barrios Populares - La Rioja
+                </span>
+                <h2 class="text-2xl font-black text-slate-900 uppercase">Comprobante de Adhesión Barrial</h2>
+                <h3 class="text-sm font-bold text-purple-700 mt-1">Proyecto Comunitario de Deporte Social</h3>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 text-xs bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <div>
+                    <span class="font-bold text-slate-500 block uppercase">Nº de Registro:</span>
+                    <span class="font-extrabold text-purple-900 text-sm">${escapeHtml(ad.id)}</span>
+                </div>
+                <div class="text-right">
+                    <span class="font-bold text-slate-500 block uppercase">Fecha de Presentación:</span>
+                    <span class="font-extrabold text-slate-800">${escapeHtml(ad.fecha || '-')}</span>
+                </div>
+            </div>
+
+            <div class="space-y-1 text-xs border-b pb-3">
+                <h4 class="font-extrabold text-purple-900 uppercase text-xs">1. Identificación Territorial</h4>
+                <p><strong>Barrio:</strong> <span class="text-slate-900 font-bold">${escapeHtml(ad.barrio || '-')}</span></p>
+            </div>
+
+            <div class="space-y-1 text-xs border-b pb-3">
+                <h4 class="font-extrabold text-purple-900 uppercase text-xs">2. Referente Barrial Responsable</h4>
+                <div class="grid grid-cols-3 gap-2">
+                    <p><strong>Nombre:</strong> ${escapeHtml(referente.nombre || '-')}</p>
+                    <p><strong>DNI:</strong> ${escapeHtml(referente.dni || '-')}</p>
+                    <p><strong>Teléfono:</strong> ${escapeHtml(referente.telefono || '-')}</p>
+                </div>
+            </div>
+
+            <div class="space-y-2 text-xs">
+                <h4 class="font-extrabold text-purple-900 uppercase text-xs">
+                    3. Nómina de Vecinos y Vecinas Adherentes (${listaVecinos.length})
+                </h4>
+                <table class="w-full text-left text-xs border border-slate-200 rounded-xl overflow-hidden">
+                    <thead class="bg-slate-100 font-bold uppercase border-b border-slate-200 text-slate-600">
+                        <tr>
+                            <th class="p-2 text-center w-8">#</th>
+                            <th class="p-2">Nombre y Apellido</th>
+                            <th class="p-2 text-center w-32">DNI</th>
+                            <th class="p-2 text-center w-32">Teléfono</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${vecinosHTML || '<tr><td colspan="4" class="p-4 text-center text-slate-400">No hay vecinos registrados.</td></tr>'}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="border-t pt-3 text-xs space-y-1">
+                <span class="font-bold text-slate-500 block uppercase">Firma / Conformidad Registrada:</span>
+                <span class="font-serif italic font-bold text-purple-900 text-sm">${escapeHtml(ad.firma || '-')}</span>
+            </div>
+
+            <div class="pt-6 border-t border-dashed border-slate-300 text-center text-[10px] text-slate-500">
+                UNIVERSIDAD POPULAR LA RIOJA &copy; 2026 | DEPORTE SOCIAL
+            </div>
+        </div>
+    `;
+
+    // 6. Montar en DOM, ejecutar impresión y limpiar
+    closeDetailModal();
+    document.body.appendChild(printArea);
+    window.print();
+    document.body.removeChild(printArea);
+}
+
 
         function deleteAdhesion(id) {
             if (confirm('¿Está seguro de eliminar este registro de Adhesión Barrial?')) {
@@ -1862,3 +1957,5 @@
     </script>
 </body>
 </html>
+
+
