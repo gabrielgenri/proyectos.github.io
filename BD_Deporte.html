@@ -1,357 +1,808 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adhesión Barrial - Proyecto Comunitario de Deporte Social</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Chart.js -->
+    <title>Nota de Adhesión Barrial - Deporte Social La Rioja</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        purple: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        indigo: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --bs-primary: #0d6efd;
-            --bs-success: #198754;
-            --bs-dark: #212529;
-            --bs-light: #f8f9fa;
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 380px;
         }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f6f9;
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 340px;
+            }
         }
-        .header-banner {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 2.5rem 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 4px solid #ffc107;
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 11pt;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .card-print {
+                border: 1px solid #ccc !important;
+                box-shadow: none !important;
+                padding: 1rem !important;
+                margin-bottom: 1rem !important;
+            }
         }
-        .card-principio {
-            border-left: 5px solid #0d6efd;
-            transition: transform 0.2s ease-in-out;
-        }
-        .card-principio:hover {
-            transform: translateY(-4px);
-        }
-        .kpi-card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            background: white;
-            padding: 1.25rem;
-            border-left: 4px solid #0d6efd;
-        }
-        .tab-pane {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .table-responsive {
-            max-height: 400px;
-            overflow-y: auto;
+        .print-only {
+            display: none;
         }
     </style>
 </head>
-<body>
+<!-- Chosen Palette: Warm Community Purple & Slate Neutral (Background: Slate-50, Primary: Purple-800, Secondary: Indigo-700, Accent: Emerald-600) -->
+<!-- Application Structure Plan: Designed a multi-view interactive community SPA structured into: 1. Institutional Hero & Principles Overview, 2. Interactive Analytical Dashboard with dynamic Chart.js visualizations (Barrios, Vecinos, Timeline), 3. Official Adhesion Form with multi-neighbor signature support & Canvas drawing, 4. Admin Management Dashboard with real-time KPIs, search/filters, CSV export, dynamic question builder, and demo dataset manager. This structure separates public engagement and exploration from administration while keeping full data synergy. -->
+<!-- Visualization & Content Choices: 1. Chart.js Bar Chart for Neighborhood Adhesion counts (Compare goal). 2. Chart.js Donut Chart for Sport Needs/Disciplines (Proportions goal). 3. Chart.js Line Chart for Daily Adhesion Timeline (Trend goal). 4. Responsive Tailwind Data Table for detailed neighborhood registry (Organize goal). 5. HTML Canvas for digital touch signature. All charts respect parent container constraints without SVGs or Mermaid JS. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<body class="min-h-full flex flex-col text-slate-800 font-sans selection:bg-purple-200 selection:text-purple-900">
 
-    <!-- CABECERA INSTITUCIONAL -->
-    <header class="header-banner shadow-sm">
-        <div class="container text-center">
-            <h1 class="fw-bold mb-1"><i class="fa-solid fa-hands-holding-child me-2"></i>Mesa de Barrios Populares</h1>
-            
+    <!-- NAVBAR INSTITUCIONAL -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchPublicTab('hero')">
+                <div class="bg-purple-800 text-white p-2.5 rounded-xl shadow-sm flex items-center justify-center">
+                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-slate-900 text-base md:text-lg leading-tight">Mesa de Barrios Populares</h1>
+                    <p class="text-xs text-purple-700 font-semibold">Registro Comunitario de Adhesiones - La Rioja</p>
+                </div>
+            </div>
+
+            <!-- NAVEGACIÓN PÚBLICA -->
+            <nav class="hidden md:flex items-center space-x-1 text-xs font-bold">
+                <button id="nav-btn-hero" onclick="switchPublicTab('hero')" class="px-3.5 py-2 rounded-lg text-purple-800 bg-purple-50 transition">
+                    Inicio y Principios
+                </button>
+                <button id="nav-btn-stats" onclick="switchPublicTab('stats')" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-purple-800 hover:bg-slate-100 transition">
+                    Estadísticas Barriales
+                </button>
+                <button id="nav-btn-form" onclick="switchPublicTab('form')" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-purple-800 hover:bg-slate-100 transition">
+                    Registrar Adhesión
+                </button>
+            </nav>
+
+            <div class="flex items-center space-x-2">
+                <button id="btn-admin-access" onclick="toggleAdminView()" class="flex items-center space-x-2 bg-purple-50 text-purple-800 hover:bg-purple-100 font-bold px-3.5 py-2 rounded-xl border border-purple-200 transition text-xs shadow-xs active:scale-95">
+                    <i data-lucide="lock" class="w-4 h-4"></i>
+                    <span id="btn-view-text">Acceso Admin</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- NAVEGACIÓN MOBILE SEGUNDA FILA -->
+        <div class="md:hidden flex border-t border-slate-100 bg-slate-50 px-2 py-1 text-xs font-bold justify-around">
+            <button id="mob-btn-hero" onclick="switchPublicTab('hero')" class="py-1.5 px-2 text-purple-800">
+                Inicio
+            </button>
+            <button id="mob-btn-stats" onclick="switchPublicTab('stats')" class="py-1.5 px-2 text-slate-600">
+                Estadísticas
+            </button>
+            <button id="mob-btn-form" onclick="switchPublicTab('form')" class="py-1.5 px-2 text-slate-600">
+                Registrar Adhesión
+            </button>
         </div>
     </header>
 
+    <!-- TOAST NOTIFICACIONES -->
+    <div id="toast-container" class="fixed top-20 right-4 z-50 space-y-2 pointer-events-none no-print"></div>
+
     <!-- CONTENEDOR PRINCIPAL -->
-    <main class="container mb-5">
-        
-        <!-- NAVEGACIÓN PRINCIPAL (SPA) -->
-        <ul class="nav nav-pills nav-fill mb-4 bg-white p-2 rounded shadow-sm border" id="appTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active fw-bold" id="tab-manifiesto" data-bs-toggle="pill" data-bs-target="#sec-manifiesto" type="button"><i class="fa-solid fa-book-open me-2"></i>Manifiesto</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link fw-bold" id="tab-explorador" data-bs-toggle="pill" data-bs-target="#sec-explorador" type="button"><i class="fa-solid fa-chart-line me-2"></i>Explorador</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link fw-bold" id="tab-formulario" data-bs-toggle="pill" data-bs-target="#sec-formulario" type="button"><i class="fa-solid fa-pen-to-square me-2"></i>Adhesión Barrial</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link fw-bold" id="tab-admin" data-bs-toggle="pill" data-bs-target="#sec-admin" type="button"><i class="fa-solid fa-user-gear me-2"></i>Administración</button>
-            </li>
-        </ul>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
 
-        <div class="tab-content" id="appTabsContent">
-
-            <!-- 1. MANIFIESTO -->
-            <section class="tab-pane fade show active" id="sec-manifiesto" role="tabpanel">
-                <div class="card border-0 shadow-sm p-4 mb-4">
-                    <h2 class="text-primary fw-bold mb-3"><i class="fa-solid fa-bullhorn me-2"></i>Proyecto Comunitario de Deporte Social</h2>
-                    <p class="fs-5 text-secondary">
+        <!-- ======================================================= -->
+        <!-- SECCIÓN 1: HEROFLEX Y PRINCIPIOS COMUNITARIOS           -->
+        <!-- ======================================================= -->
+        <section id="section-hero" class="space-y-6">
+            
+            <!-- HERO BANNER -->
+            <div class="bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 text-white rounded-2xl p-6 md:p-10 shadow-lg relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <span class="bg-purple-700/80 text-purple-100 text-xs font-bold px-3 py-1 rounded-full border border-purple-400/30 inline-block uppercase tracking-wider">
+                        Iniciativa Territorial La Rioja 2026
+                    </span>
+                    <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight uppercase">
+                        Proyecto Comunitario de Deporte Social
+                    </h1>
+                    <p class="text-purple-100 text-sm md:text-base leading-relaxed">
                         Iniciativa impulsada por la Mesa de Barrios Populares para fortalecer la organización comunitaria, promover la inclusión, el deporte popular y construir oportunidades para niños, jóvenes y familias riojanas.
                     </p>
-                    <hr>
-                    <h4 class="fw-bold mb-3 text-dark">Tres Principios Irrenunciables del Acuerdo Comunitario:</h4>
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <div class="card card-principio h-100 p-3 bg-light shadow-sm">
-                                <h5 class="fw-bold text-primary"><span class="badge bg-primary me-2">1</span>NO MENTIR</h5>
-                                <p class="mb-0 text-muted small">Construir relaciones basadas en la verdad, la transparencia, la confianza mutua y el respeto horizontal entre vecinos y organizaciones.</p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="switchPublicTab('form')" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold px-6 py-3 rounded-xl shadow-md transition flex items-center gap-2 text-xs md:text-sm active:scale-95">
+                            <i data-lucide="pen-tool" class="w-4 h-4"></i>
+                            <span>FIRMAR ADHESIÓN BARRIAL</span>
+                        </button>
+                        <button onclick="switchPublicTab('stats')" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold px-5 py-3 rounded-xl transition flex items-center gap-2 text-xs md:text-sm">
+                            <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                            <span>Ver Mapa e Impacto</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTRODUCCIÓN GENERAL -->
+            <div class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-xs space-y-4">
+                <h2 class="text-lg md:text-xl font-bold text-slate-900 border-b pb-3 flex items-center gap-2">
+                    <i data-lucide="book-open" class="w-5 h-5 text-purple-700"></i>
+                    Manifiesto y Adhesión Comunitaria
+                </h2>
+                <p class="text-slate-700 text-xs md:text-sm leading-relaxed">
+                    Esta aplicación web interactiva permite a los barrios de La Rioja registrar y visibilizar su adhesión comunitaria al Proyecto de Deporte Social. Entendemos al deporte social como una herramienta estratégica de educación popular, prevención, salud y contención social.
+                </p>
+
+                <!-- TRES PRINCIPIOS Y ACUERDOS -->
+                <div class="bg-purple-50/70 p-5 rounded-2xl border border-purple-200/80 my-4 space-y-4">
+                    <h3 class="font-extrabold text-purple-900 text-xs md:text-sm uppercase tracking-wider flex items-center gap-2 border-b border-purple-200 pb-2">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-purple-700"></i>
+                        Tres Principios Irrenunciables del Acuerdo Comunitario:
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-xl border border-purple-100 shadow-xs flex flex-col justify-between space-y-2">
+                            <div>
+                                <div class="flex items-center space-x-2 text-purple-900 font-extrabold text-sm mb-1">
+                                    <span class="w-6 h-6 rounded-full bg-purple-100 text-purple-800 flex items-center justify-center text-xs">1</span>
+                                    <h4>NO MENTIR</h4>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Construir relaciones basadas en la verdad, la transparencia, la confianza mutua y el respeto horizontal entre vecinos y organizaciones.
+                                </p>
                             </div>
+                            <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-md self-start">Transparencia y Confianza</span>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card card-principio h-100 p-3 bg-light shadow-sm" style="border-left-color: #198754;">
-                                <h5 class="fw-bold text-success"><span class="badge bg-success me-2">2</span>NO ROBAR</h5>
-                                <p class="mb-0 text-muted small">Cuidar los bienes, equipamientos, materiales y espacios deportivos de la comunidad. Lo comunitario pertenece a todos.</p>
+
+                        <div class="bg-white p-4 rounded-xl border border-purple-100 shadow-xs flex flex-col justify-between space-y-2">
+                            <div>
+                                <div class="flex items-center space-x-2 text-purple-900 font-extrabold text-sm mb-1">
+                                    <span class="w-6 h-6 rounded-full bg-purple-100 text-purple-800 flex items-center justify-center text-xs">2</span>
+                                    <h4>NO ROBAR</h4>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Cuidar los bienes, equipamientos, materiales y espacios deportivos de la comunidad. Lo comunitario pertenece a todos.
+                                </p>
                             </div>
+                            <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-md self-start">Cuidado del Bien Común</span>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card card-principio h-100 p-3 bg-light shadow-sm" style="border-left-color: #ffc107;">
-                                <h5 class="fw-bold text-warning"><span class="badge bg-warning text-dark me-2">3</span>NO SER FLOJOS</h5>
-                                <p class="mb-0 text-muted small">Participar, colaborar activamente y poner el hombro en el trabajo colectivo necesario para el sostenimiento de las actividades.</p>
+
+                        <div class="bg-white p-4 rounded-xl border border-purple-100 shadow-xs flex flex-col justify-between space-y-2">
+                            <div>
+                                <div class="flex items-center space-x-2 text-purple-900 font-extrabold text-sm mb-1">
+                                    <span class="w-6 h-6 rounded-full bg-purple-100 text-purple-800 flex items-center justify-center text-xs">3</span>
+                                    <h4>NO SER FLOJOS</h4>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Participar, colaborar activamente y poner el hombro en el trabajo colectivo necesario para el sostenimiento de las actividades.
+                                </p>
                             </div>
+                            <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-md self-start">Trabajo Comunitario</span>
                         </div>
                     </div>
                 </div>
-            </section>
 
-            <!-- 2. EXPLORADOR E INTERACTIVO -->
-            <section class="tab-pane fade" id="sec-explorador" role="tabpanel">
-                <div class="row g-3 mb-4">
-                    <div class="col-md-3">
-                        <div class="kpi-card">
-                            <span class="text-muted small fw-bold">TOTAL ADHESIONES</span>
-                            <h3 class="fw-bold my-1 text-primary" id="kpi-total-adhesiones">0</h3>
-                            <span class="text-muted extra-small">Presentaciones de actas</span>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="kpi-card" style="border-left-color: #198754;">
-                            <span class="text-muted small fw-bold">BARRIOS PARTICIPANTES</span>
-                            <h3 class="fw-bold my-1 text-success" id="kpi-barrios-participantes">0</h3>
-                            <span class="text-muted extra-small">Sectores representados</span>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="kpi-card" style="border-left-color: #ffc107;">
-                            <span class="text-muted small fw-bold">VECINOS ADHERIDOS</span>
-                            <h3 class="fw-bold my-1 text-warning" id="kpi-vecinos-adheridos">0</h3>
-                            <span class="text-muted extra-small">Firmas en actas</span>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="kpi-card" style="border-left-color: #0dcaf0;">
-                            <span class="text-muted small fw-bold">PROMEDIO POR BARRIO</span>
-                            <h3 class="fw-bold my-1 text-info" id="kpi-promedio-barrio">0</h3>
-                            <span class="text-muted extra-small">Vecinos por presentación</span>
-                        </div>
-                    </div>
+                <p class="text-xs text-slate-600 italic">
+                    Al suscribir esta nota de adhesión barrial, cada vecino y referente se compromete a promover estos acuerdos de convivencia orientados a edificar una comunidad organizada, solidaria e inclusiva.
+                </p>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- SECCIÓN 2: ESTADÍSTICAS Y PANEL VISUAL INTERACTIVO       -->
+        <!-- ======================================================= -->
+        <section id="section-stats" class="hidden space-y-6">
+            
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-2">
+                <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                    <i data-lucide="bar-chart-2" class="w-6 h-6 text-purple-700"></i>
+                    Explorador Interactivo de Adhesiones Barriales
+                </h2>
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Esta sección permite explorar los datos acumulados de adhesión comunitaria por barrio, analizando la cantidad de vecinos firmantes, la evolución del compromiso territorial y las disciplinas deportivas de mayor demanda en La Rioja.
+                </p>
+            </div>
+
+            <!-- CARDS KPIS PÚBLICOS -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Adhesiones</span>
+                    <span id="pub-kpi-adhesiones" class="text-2xl md:text-3xl font-black text-purple-900 mt-1 block">0</span>
+                    <span class="text-[11px] text-slate-500 mt-1 block">Presentaciones colectivas</span>
                 </div>
-
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="card border-0 shadow-sm p-3">
-                            <h6 class="fw-bold mb-3"><i class="fa-solid fa-chart-bar me-2"></i>Vecinos Adheridos por Barrio</h6>
-                            <canvas id="chartBarrios" height="200"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card border-0 shadow-sm p-3">
-                            <h6 class="fw-bold mb-3"><i class="fa-solid fa-chart-pie me-2"></i>Disciplinas Deportivas Solicitadas</h6>
-                            <canvas id="chartDisciplinas" height="200"></canvas>
-                        </div>
-                    </div>
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Barrios Participantes</span>
+                    <span id="pub-kpi-barrios" class="text-2xl md:text-3xl font-black text-purple-900 mt-1 block">0</span>
+                    <span class="text-[11px] text-slate-500 mt-1 block">Sectores representados</span>
                 </div>
-            </section>
-
-            <!-- 3. FORMULARIO DE REGISTRO DE ADHESIÓN -->
-            <section class="tab-pane fade" id="sec-formulario" role="tabpanel">
-                <div class="card border-0 shadow-sm p-4">
-                    <div class="text-center mb-4 border-bottom pb-3">
-                        <span class="badge bg-secondary mb-2">DOCUMENTO OFICIAL COMUNITARIO</span>
-                        <h3 class="fw-bold text-primary">NOTA DE ADHESIÓN BARRIAL</h3>
-                        <p class="text-muted">Proyecto Comunitario de Deporte Social - La Rioja</p>
-                    </div>
-
-                    <form id="formAdhesion">
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-8">
-                                <label class="form-label fw-bold">Nombre del Barrio <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="barrioNombre" required placeholder="Ej. Barrio Agrario">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold">Fecha de Presentación</label>
-                                <input type="date" class="form-control" id="fechaAdhesion" required>
-                            </div>
-                        </div>
-
-                        <!-- SECCIÓN DINÁMICA DE VECINOS ADHERENTES -->
-                        <div class="border rounded p-3 bg-light mb-4">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="fw-bold mb-0"><i class="fa-solid fa-users me-2"></i>Nómina de Vecinos/as Adherentes</h5>
-                                <button type="button" class="btn btn-sm btn-primary" id="btnAgregarVecino">
-                                    <i class="fa-solid fa-user-plus me-1"></i> AGREGAR VECINO/A
-                                </button>
-                            </div>
-                            
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped bg-white" id="tablaVecinos">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>Nombre y Apellido</th>
-                                            <th>DNI</th>
-                                            <th>Teléfono</th>
-                                            <th class="text-center">Acepta Acuerdos</th>
-                                            <th class="text-center">Acción</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbodyVecinos">
-                                        <!-- Filas dinámicas -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- REFERENTE BARRIAL -->
-                        <h5 class="fw-bold mb-3"><i class="fa-solid fa-id-card me-2"></i>Datos del Referente Barrial</h5>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold">Nombre Completo <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="refNombre" required placeholder="Nombre del referente">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold">DNI <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="refDni" required placeholder="Número de DNI">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold">Teléfono de Contacto <span class="text-danger">*</span></label>
-                                <input type="tel" class="form-control" id="refTel" required placeholder="Teléfono / WhatsApp">
-                            </div>
-                        </div>
-
-                        <!-- ENCUESTAS Y PREGUNTAS DINÁMICAS -->
-                        <div id="contenedorPreguntasDinamicas" class="mb-4"></div>
-
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-success btn-lg fw-bold" id="btnEnviar">
-                                <i class="fa-solid fa-cloud-arrow-up me-2"></i> REGISTRAR ADHESIÓN Y ENVIAR A LA NUBE
-                            </button>
-                        </div>
-                    </form>
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Vecinos Adheridos</span>
+                    <span id="pub-kpi-vecinos" class="text-2xl md:text-3xl font-black text-indigo-700 mt-1 block">0</span>
+                    <span class="text-[11px] text-slate-500 mt-1 block">Firmas registradas</span>
                 </div>
-            </section>
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Promedio por Barrio</span>
+                    <span id="pub-kpi-promedio" class="text-2xl md:text-3xl font-black text-emerald-600 mt-1 block">0</span>
+                    <span class="text-[11px] text-slate-500 mt-1 block">Vecinos por acta</span>
+                </div>
+            </div>
 
-            <!-- 4. PANEL ADMINISTRATIVO -->
-            <section class="tab-pane fade" id="sec-admin" role="tabpanel">
+            <!-- GRAFICOS INTERACTIVOS (CHART.JS) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
-                <!-- LOGIN SIMULADO -->
-                <div id="adminLoginBlock" class="card border-0 shadow-sm p-4 mx-auto style-login" style="max-width: 400px;">
-                    <h4 class="fw-bold text-center mb-3"><i class="fa-solid fa-lock me-2"></i>Acceso Admin</h4>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Usuario</label>
-                        <input type="text" class="form-control" id="loginUser" value="admin">
+                <!-- BARS: VECINOS POR BARRIO -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm md:text-base flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-purple-700"></i>
+                            Vecinos Adheridos por Barrio
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Comparativa del nivel de participación comunitaria según sector urbano.</p>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Contraseña</label>
-                        <input type="password" class="form-control" id="loginPass" value="admin">
+                    <div class="chart-container">
+                        <canvas id="chart-barrios"></canvas>
                     </div>
-                    <button class="btn btn-primary w-100 fw-bold" id="btnLogin">INGRESAR</button>
                 </div>
 
-                <!-- PANEL DE CONTROL ADMIN -->
-                <div id="adminPanelBlock" class="d-none">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="fw-bold text-primary mb-0"><i class="fa-solid fa-sliders me-2"></i>Gestión Comunitaria de Registros</h4>
+                <!-- DONUT: DISCIPLINAS O NECESIDADES -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm md:text-base flex items-center gap-2">
+                            <i data-lucide="pie-chart" class="w-4 h-4 text-purple-700"></i>
+                            Disciplinas Deportivas Solicitadas
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Distribución porcentual de las disciplinas priorizadas por las familias.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-disciplinas"></canvas>
+                    </div>
+                </div>
+
+                <!-- LINE: EVOLUCIÓN TEMPORAL -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4 lg:col-span-2">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm md:text-base flex items-center gap-2">
+                            <i data-lucide="trending-up" class="w-4 h-4 text-purple-700"></i>
+                            Evolución de Adhesiones Registradas
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Avance cronológico acumulado de firmas e ingresos de notas comunitarias.</p>
+                    </div>
+                    <div class="chart-container" style="max-width: 1000px;">
+                        <canvas id="chart-timeline"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- SECCIÓN 3: FORMULARIO PÚBLICO (NOTA DE ADHESIÓN BARRIAL)-->
+        <!-- ======================================================= -->
+        <section id="section-form" class="hidden space-y-6">
+
+            <!-- CABECERA DE LA NOTA -->
+            <div class="bg-white rounded-2xl shadow-xs border border-slate-200 p-6 md:p-8 card-print">
+                <div class="border-b border-slate-200 pb-5 mb-5">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <span class="bg-purple-100 text-purple-800 text-xs font-extrabold px-3 py-1 rounded-full border border-purple-200">
+                            DOCUMENTO OFICIAL COMUNITARIO
+                        </span>
+                        <span class="text-xs text-slate-500 font-semibold">La Rioja, Argentina</span>
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight uppercase">
+                        NOTA DE ADHESIÓN BARRIAL
+                    </h1>
+                    <h2 class="text-base md:text-lg font-bold text-purple-800 mt-1">
+                        PROYECTO COMUNITARIO DE DEPORTE SOCIAL
+                    </h2>
+                </div>
+
+                <div class="text-slate-700 space-y-3 text-xs md:text-sm leading-relaxed">
+                    <p>
+                        Los abajo firmantes, vecinos y vecinas del barrio, manifestamos nuestra adhesión al <strong>Proyecto Comunitario de Deporte Social</strong>, impulsado por la Mesa de Barrios Populares, como una iniciativa destinada a fortalecer la organización comunitaria, promover el deporte, generar espacios de participación y acompañar el desarrollo integral de niñas, niños, jóvenes y familias.
+                    </p>
+                    <p class="italic font-medium text-slate-800">
+                        Entendemos al Deporte Social como una herramienta de inclusión, prevención, educación popular y construcción colectiva. Asumimos con responsabilidad los tres principios: No Mentir, No Robar y No Ser Flojos para el trabajo comunitario.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FORMULARIO INTERACTIVO MULTI-VECINO -->
+            <form id="adhesion-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+
+                <!-- 1. IDENTIFICACIÓN TERRITORIAL -->
+                <div class="bg-white rounded-2xl shadow-xs p-6 border border-slate-200 card-print">
+                    <h3 class="text-xs font-extrabold text-purple-900 uppercase tracking-wider mb-4 border-b pb-2 flex items-center gap-2">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-purple-700"></i>
+                        1. Identificación Territorial
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <button class="btn btn-outline-success btn-sm me-2 fw-bold" id="btnExportarCSV">
-                                <i class="fa-solid fa-file-csv me-1"></i> EXPORTAR CSV
-                            </button>
-                            <button class="btn btn-outline-danger btn-sm fw-bold" id="btnCerrarSesion">
-                                <i class="fa-solid fa-right-from-bracket me-1"></i> Salir
-                            </button>
+                            <label class="block text-slate-800 text-xs font-bold uppercase mb-1" for="barrio">
+                                Nombre del Barrio <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="barrio" required placeholder="Ej: Barrio Vargas, Barrio San Vicente..." class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs md:text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-slate-800 text-xs font-bold uppercase mb-1" for="fecha_registro">
+                                Fecha de Registro <span class="text-red-500">*</span>
+                            </label>
+                            <input type="date" id="fecha_registro" required class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs md:text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none transition bg-slate-50">
                         </div>
                     </div>
+                </div>
 
-                    <!-- BUSCADOR Y FILTROS -->
-                    <div class="card border-0 shadow-sm p-3 mb-4">
-                        <div class="row g-2">
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" id="inputBuscar" placeholder="Buscar por barrio, nombre, DNI...">
-                            </div>
-                            <div class="col-md-6">
-                                <select class="form-select" id="selectFiltroBarrio">
-                                    <option value="">Todos los barrios</option>
-                                </select>
-                            </div>
+                <!-- 2. REFERENTE BARRIAL -->
+                <div class="bg-white rounded-2xl shadow-xs p-6 border border-slate-200 card-print">
+                    <h3 class="text-xs font-extrabold text-purple-900 uppercase tracking-wider mb-4 border-b pb-2 flex items-center gap-2">
+                        <i data-lucide="user-check" class="w-4 h-4 text-purple-700"></i>
+                        2. Datos del Referente Barrial Responsable
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-slate-800 text-xs font-bold uppercase mb-1" for="referente_nombre">
+                                Nombre y Apellido <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="referente_nombre" required placeholder="Nombre completo" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs md:text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-slate-800 text-xs font-bold uppercase mb-1" for="referente_dni">
+                                DNI Referente <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="referente_dni" required pattern="[0-9]{7,8}" title="DNI sin puntos" placeholder="Ej: 30123456" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs md:text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-slate-800 text-xs font-bold uppercase mb-1" for="referente_telefono">
+                                Teléfono de Contacto <span class="text-red-500">*</span>
+                            </label>
+                            <input type="tel" id="referente_telefono" required placeholder="Ej: 3804123456" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs md:text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none transition">
                         </div>
                     </div>
+                </div>
 
-                    <!-- TABLA DE REGISTROS -->
-                    <div class="card border-0 shadow-sm p-3 mb-4">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle" id="tablaAdmin">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>ID / Fecha</th>
-                                        <th>Barrio</th>
-                                        <th>Vecinos</th>
-                                        <th>Referente</th>
-                                        <th>Contacto</th>
-                                        <th class="text-center">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbodyAdmin">
-                                    <!-- Carga dinámica -->
-                                </tbody>
-                            </table>
+                <!-- 3. TABLA DINÁMICA DE VECINOS ADHERENTES -->
+                <div class="bg-white rounded-2xl shadow-xs p-6 border border-slate-200 card-print">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 mb-4 border-b gap-2">
+                        <div>
+                            <h3 class="text-xs font-extrabold text-purple-900 uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="users" class="w-4 h-4 text-purple-700"></i>
+                                3. Nómina de Vecinos y Vecinas Adherentes del Barrio
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Agregue a todos los vecinos que adhieren en esta presentación comunitaria.</p>
                         </div>
+                        <button type="button" onclick="addNeighborRow()" class="bg-purple-50 hover:bg-purple-100 text-purple-800 font-bold px-3.5 py-2 rounded-xl border border-purple-200 text-xs flex items-center gap-1.5 transition no-print active:scale-95 self-start sm:self-auto">
+                            <i data-lucide="user-plus" class="w-4 h-4"></i>
+                            <span>+ AGREGAR VECINO/A</span>
+                        </button>
                     </div>
 
-                    <!-- GESTOR DE PREGUNTAS DINÁMICAS -->
-                    <div class="card border-0 shadow-sm p-4">
-                        <h5 class="fw-bold mb-3"><i class="fa-solid fa-folder-plus me-2"></i>Gestor de Campos / Preguntas Dinámicas</h5>
-                        <div class="row g-2 mb-3">
-                            <div class="col-md-5">
-                                <input type="text" class="form-control" id="nuevaPreguntaTexto" placeholder="Ej. ¿Requieren equipamiento de fútbol?">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 text-slate-600 font-bold uppercase border-b border-slate-200">
+                                    <th class="p-2.5 text-center w-10">Nº</th>
+                                    <th class="p-2.5">Nombre y Apellido <span class="text-red-500">*</span></th>
+                                    <th class="p-2.5 w-32">DNI <span class="text-red-500">*</span></th>
+                                    <th class="p-2.5 w-36">Teléfono <span class="text-red-500">*</span></th>
+                                    <th class="p-2.5 text-center w-20 no-print">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="neighbors-tbody" class="divide-y divide-slate-100">
+                                <!-- Inyectado dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 4. PREGUNTAS PERSONALIZADAS DINÁMICAS (CONFIGURADAS POR ADMIN) -->
+                <div id="dynamic-questions-container" class="space-y-4"></div>
+
+                <!-- 5. COMPROMISO Y FIRMA DIGITAL -->
+                <div class="bg-white rounded-2xl shadow-xs p-6 border border-slate-200 space-y-4 card-print">
+                    <h3 class="text-xs font-extrabold text-purple-900 uppercase tracking-wider mb-2 border-b pb-2 flex items-center gap-2">
+                        <i data-lucide="file-signature" class="w-4 h-4 text-purple-700"></i>
+                        5. Compromiso y Conformidad Comunitarias
+                    </h3>
+
+                    <div class="flex items-start space-x-3 bg-purple-50/60 p-3.5 rounded-xl border border-purple-100">
+                        <input type="checkbox" id="acepta_principios" required class="mt-0.5 h-4 w-4 text-purple-600 focus:ring-purple-500 border-slate-300 rounded cursor-pointer">
+                        <label for="acepta_principios" class="text-xs md:text-sm text-slate-800 cursor-pointer leading-snug font-medium">
+                            Declaramos bajo conformidad que aceptamos y adherimos formalmente a los tres principios comunitarios (<strong>No Mentir, No Robar, No Ser Flojos</strong>) y participaremos en el Proyecto Comunitario de Deporte Social. <span class="text-red-500">*</span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="block text-xs font-bold text-slate-800 uppercase">
+                                Firma o Aclaración de Conformidad <span class="text-red-500">*</span>
+                            </label>
+                            <div class="flex space-x-1 no-print text-xs">
+                                <button type="button" id="tab-sig-text" onclick="setSignatureMode('text')" class="px-2.5 py-1 rounded-lg font-bold bg-purple-100 text-purple-800">Nombre / Aclaración</button>
+                                <button type="button" id="tab-sig-draw" onclick="setSignatureMode('draw')" class="px-2.5 py-1 rounded-lg font-bold bg-slate-100 text-slate-600 hover:bg-slate-200">Firma Táctil (Canvas)</button>
                             </div>
-                            <div class="col-md-4">
-                                <select class="form-select" id="nuevaPreguntaTipo">
-                                    <option value="text">Texto Corto</option>
-                                    <option value="textarea">Párrafo</option>
-                                    <option value="checkbox">Casilla de Confirmación</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <button class="btn btn-primary w-100 fw-bold" id="btnAgregarCampo">
-                                    <i class="fa-solid fa-plus me-1"></i> AGREGAR CAMPO
+                        </div>
+
+                        <!-- MODO TEXTO -->
+                        <div id="signature-text-container">
+                            <input type="text" id="firma_texto" placeholder="Escriba el nombre completo del referente o apoderado barrial" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs md:text-sm italic font-serif focus:ring-2 focus:ring-purple-600 focus:outline-none">
+                        </div>
+
+                        <!-- MODO CANVAS (TÁCTIL) -->
+                        <div id="signature-draw-container" class="hidden no-print">
+                            <div class="border-2 border-dashed border-slate-300 rounded-xl bg-slate-50 relative">
+                                <canvas id="signature-pad" class="w-full h-32 touch-none cursor-crosshair rounded-xl"></canvas>
+                                <button type="button" onclick="clearSignatureCanvas()" class="absolute top-2 right-2 bg-white/90 hover:bg-white text-xs px-2.5 py-1 rounded-md border border-slate-300 shadow-xs font-bold">
+                                    Limpiar
                                 </button>
                             </div>
+                            <p class="text-[11px] text-slate-400 mt-1">Dibuje su firma digital con el dedo o mouse sobre el recuadro superior.</p>
                         </div>
-                        <ul class="list-group" id="listaCamposDinamicos">
-                            <!-- Campos activos -->
-                        </ul>
                     </div>
-
                 </div>
 
-            </section>
+                <!-- BOTONES DE ACCIÓN -->
+                <div class="flex items-center justify-between pt-2 no-print">
+                    <button type="submit" class="bg-purple-800 hover:bg-purple-900 text-white font-extrabold px-8 py-3 rounded-xl shadow-md transition-all flex items-center space-x-2 active:scale-95 text-xs md:text-sm">
+                        <span>REGISTRAR ADHESIÓN BARRIAL</span>
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                    <button type="button" onclick="clearForm()" class="text-xs text-slate-500 font-bold hover:text-purple-800 hover:bg-purple-50 px-3 py-2 rounded-xl transition">
+                        Borrar Campos
+                    </button>
+                </div>
+            </form>
 
-        </div>
+            <!-- PANTALLA DE ÉXITO -->
+            <div id="success-message" class="hidden bg-white rounded-2xl shadow-xs border border-slate-200 p-8 text-center space-y-6">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                    <i data-lucide="check-circle" class="w-10 h-10"></i>
+                </div>
+                <div>
+                    <span class="bg-emerald-50 text-emerald-700 text-xs font-extrabold px-3 py-1 rounded-full border border-emerald-200">
+                        REGISTRO EXISTOSO
+                    </span>
+                    <h2 class="text-2xl font-extrabold text-slate-900 mt-2">¡ADHESIÓN REGISTRADA CORRECTAMENTE!</h2>
+                    <p class="text-slate-600 text-xs md:text-sm max-w-md mx-auto mt-1 leading-relaxed">
+                        La Nota de Adhesión Barrial ha sido almacenada de forma segura en el registro comunitario de La Rioja.
+                    </p>
+                </div>
+
+                <!-- RESUMEN DE CONSTANCIA -->
+                <div id="success-summary-box" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left max-w-lg mx-auto text-xs space-y-2">
+                    <!-- Inyectado por JS -->
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-3 pt-2 no-print">
+                    <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 transition shadow-xs">
+                        <i data-lucide="printer" class="w-4 h-4"></i>
+                        <span>Imprimir Constancia</span>
+                    </button>
+                    <button onclick="resetPublicForm()" class="bg-purple-800 text-white font-bold px-5 py-2.5 rounded-xl hover:bg-purple-900 transition text-xs flex items-center gap-2 shadow-xs">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                        <span>Registrar Otra Adhesión</span>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- SECCIÓN 4: ACCESO LOGIN ADMINISTRACIÓN                  -->
+        <!-- ======================================================= -->
+        <section id="section-admin-login" class="hidden max-w-md mx-auto my-12 bg-white p-8 rounded-2xl shadow-xs border border-slate-200 no-print">
+            <div class="text-center mb-6">
+                <div class="bg-purple-100 text-purple-800 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i data-lucide="shield" class="w-6 h-6"></i>
+                </div>
+                <h2 class="text-xl font-extrabold text-slate-900">Panel de Gestión Comunitaria</h2>
+                <p class="text-xs text-slate-500 mt-1">Ingrese sus credenciales administrativas</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1" for="admin_user">Usuario</label>
+                    <input type="text" id="admin_user" required placeholder="admin" class="w-full border border-slate-300 rounded-xl px-3.5 py-2 text-xs md:text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1" for="admin_pass">Contraseña</label>
+                    <input type="password" id="admin_pass" required placeholder="admin" class="w-full border border-slate-300 rounded-xl px-3.5 py-2 text-xs md:text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none">
+                </div>
+
+                <div id="login-error" class="hidden text-xs text-red-600 font-bold text-center bg-red-50 p-2.5 rounded-xl border border-red-200">
+                    Usuario o contraseña incorrectos (Usar: admin / admin)
+                </div>
+
+                <button type="submit" class="w-full bg-purple-800 hover:bg-purple-900 text-white py-2.5 rounded-xl font-bold text-xs md:text-sm transition shadow-xs">
+                    Ingresar al Panel
+                </button>
+            </form>
+            <div class="mt-4 pt-3 border-t text-center">
+                <button onclick="switchPublicTab('hero')" class="text-xs text-purple-800 hover:underline font-bold">← Volver al Inicio Público</button>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- SECCIÓN 5: PANEL ADMINISTRATIVO (DASHBOARD COMPLETO)   -->
+        <!-- ======================================================= -->
+        <section id="section-admin-dashboard" class="hidden space-y-6 no-print">
+
+            <!-- CABECERA DASHBOARD -->
+            <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-xl font-black text-slate-900">Panel de Control - Adhesiones Barriales</h2>
+                        <span class="bg-purple-100 text-purple-800 text-xs px-2.5 py-0.5 rounded-full font-bold">Mesa Popular</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1">Gestión territorial de proyectos comunitarios de deporte social La Rioja</p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="exportToCSV(false)" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-xs active:scale-95">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>CSV Filtrado</span>
+                    </button>
+                    <button onclick="exportToCSV(true)" class="bg-purple-800 hover:bg-purple-900 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-xs active:scale-95">
+                        <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                        <span>CSV Completo</span>
+                    </button>
+                    <button onclick="logoutAdmin()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition">
+                        Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+
+            <!-- TARJETAS METRICAS KPI -->
+            <div class="grid grid-cols-2 lg:grid-cols-6 gap-3">
+                <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-200">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase">Total Actas</p>
+                    <h3 id="kpi-total-adhesiones" class="text-xl font-black text-purple-900 mt-1">0</h3>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-200">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase">Barrios Únicos</p>
+                    <h3 id="kpi-total-barrios" class="text-xl font-black text-purple-900 mt-1">0</h3>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-200">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase">Total Vecinos</p>
+                    <h3 id="kpi-total-vecinos" class="text-xl font-black text-indigo-700 mt-1">0</h3>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-200">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase">Promedio Vecinos</p>
+                    <h3 id="kpi-promedio-vecinos" class="text-xl font-black text-purple-900 mt-1">0</h3>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-200">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase">Adhesiones Hoy</p>
+                    <h3 id="kpi-adhesiones-hoy" class="text-xl font-black text-emerald-600 mt-1">0</h3>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-200">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase">Mayor Participación</p>
+                    <h3 id="kpi-mayor-barrio" class="text-xs font-bold text-purple-900 mt-1 truncate">-</h3>
+                </div>
+            </div>
+
+            <!-- TABS DEL PANEL -->
+            <div class="border-b border-slate-200 bg-white rounded-t-2xl px-4 pt-2 flex space-x-6 text-xs md:text-sm">
+                <button id="tab-btn-adhesiones" onclick="switchAdminTab('adhesiones')" class="border-b-2 border-purple-800 text-purple-800 pb-3 font-bold flex items-center gap-2">
+                    <i data-lucide="list" class="w-4 h-4"></i>
+                    <span>Registros de Adhesión</span>
+                    <span id="badge-count-adhesiones" class="bg-purple-100 text-purple-800 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+                </button>
+                <button id="tab-btn-builder" onclick="switchAdminTab('builder')" class="border-b-2 border-transparent text-slate-500 hover:text-slate-700 pb-3 font-semibold flex items-center gap-2">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                    <span>Gestor de Preguntas</span>
+                </button>
+                <button id="tab-btn-demo" onclick="switchAdminTab('demo')" class="border-b-2 border-transparent text-slate-500 hover:text-slate-700 pb-3 font-semibold flex items-center gap-2">
+                    <i data-lucide="database" class="w-4 h-4"></i>
+                    <span>Mantenimiento de Datos</span>
+                </button>
+            </div>
+
+            <!-- TAB CONTENT 1: ADHESIONES BARRIALES -->
+            <div id="tab-adhesiones-content" class="space-y-4">
+
+                <!-- FILTROS Y BÚSQUEDA -->
+                <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-200 space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div class="md:col-span-2 relative">
+                            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+                            <input type="text" id="filter-search" oninput="renderAdminTable()" placeholder="Buscar por Barrio, Vecino, DNI, Referente..." class="w-full pl-9 pr-3 py-2 text-xs md:text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-600 focus:outline-none">
+                        </div>
+                        <div>
+                            <select id="filter-barrio" onchange="renderAdminTable()" class="w-full border border-slate-300 rounded-xl py-2 px-3 text-xs md:text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none bg-white">
+                                <option value="">Todos los barrios</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="filter-sort" onchange="renderAdminTable()" class="w-full border border-slate-300 rounded-xl py-2 px-3 text-xs md:text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none bg-white">
+                                <option value="fecha-desc">Fecha (Más reciente)</option>
+                                <option value="fecha-asc">Fecha (Más antigua)</option>
+                                <option value="barrio-asc">Barrio (A - Z)</option>
+                                <option value="vecinos-desc">Mayor cant. Vecinos</option>
+                                <option value="vecinos-asc">Menor cant. Vecinos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 text-xs">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-slate-500 font-medium">Rango fecha:</span>
+                            <input type="date" id="filter-date-from" onchange="renderAdminTable()" class="border border-slate-300 rounded-lg px-2 py-1 text-xs">
+                            <span class="text-slate-400">-</span>
+                            <input type="date" id="filter-date-to" onchange="renderAdminTable()" class="border border-slate-300 rounded-lg px-2 py-1 text-xs">
+                        </div>
+                        <button onclick="clearAdminFilters()" class="text-purple-800 hover:underline font-bold">Limpiar Filtros</button>
+                    </div>
+                </div>
+
+                <!-- TABLA DE REGISTROS -->
+                <div class="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-600">
+                        <thead class="bg-slate-50 text-slate-500 font-bold uppercase border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">ID / Fecha</th>
+                                <th class="p-3">Barrio</th>
+                                <th class="p-3 text-center">Vecinos Adheridos</th>
+                                <th class="p-3">Referente Barrial</th>
+                                <th class="p-3">Contacto Referente</th>
+                                <th class="p-3 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adhesiones-table-body" class="divide-y divide-slate-100">
+                            <!-- Inyectado dinámicamente -->
+                        </tbody>
+                    </table>
+                    <div id="no-records-msg" class="hidden p-8 text-center text-slate-400 text-xs">
+                        No se encontraron registros de adhesión con los criterios aplicados.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB CONTENT 2: GESTOR DE PREGUNTAS DINÁMICAS -->
+            <div id="tab-builder-content" class="hidden space-y-4">
+                <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-5">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900">Agregar Pregunta / Campo Adicional al Formulario</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Las preguntas creadas aparecerán automáticamente dentro de la Nota de Adhesión Barrial pública.</p>
+                    </div>
+
+                    <div class="space-y-3 border-t pt-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1" for="new-q-title">Pregunta / Título del Campo</label>
+                            <input type="text" id="new-q-title" placeholder="Ej: ¿Requieren espacio o insumos para práctica deportiva escolar?" class="w-full border border-slate-300 rounded-xl p-2.5 text-xs md:text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1" for="new-q-type">Tipo de Campo</label>
+                                <select id="new-q-type" class="w-full border border-slate-300 rounded-xl p-2.5 text-xs md:text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none bg-white">
+                                    <option value="text">Texto Corto</option>
+                                    <option value="textarea">Texto Largo / Párrafo</option>
+                                    <option value="checkbox">Casilla de Confirmación (Sí/No)</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center pt-5">
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" id="new-q-required" class="h-4 w-4 text-purple-600 rounded">
+                                    <span class="text-xs font-bold text-slate-700">Campo Obligatorio</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button onclick="addCustomQuestion()" class="bg-purple-800 hover:bg-purple-900 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 transition shadow-xs active:scale-95">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            <span>Agregar Pregunta al Formulario</span>
+                        </button>
+                    </div>
+
+                    <div class="border-t pt-4">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase mb-3">Campos Personalizados Activos:</h4>
+                        <div id="custom-questions-list" class="space-y-2 text-xs text-slate-500 italic">
+                            No hay preguntas dinámicas adicionales agregadas.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB CONTENT 3: MANTENIMIENTO Y DATOS DEMO -->
+            <div id="tab-demo-content" class="hidden space-y-4">
+                <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4">
+                    <h3 class="text-base font-bold text-slate-900">Mantenimiento de Datos e Integridad</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Los datos cargados se almacenan de forma local en su navegador (LocalStorage). Puede restaurar la muestra inicial con barrios de La Rioja o reiniciar el sistema.
+                    </p>
+
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="restoreDemoData()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-800 border border-indigo-200 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 transition active:scale-95">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                            <span>Cargar / Restaurar Datos Demo La Rioja</span>
+                        </button>
+                        <button onclick="clearAllData()" class="bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 transition active:scale-95">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            <span>Eliminar Todos los Registros</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
     </main>
 
-    <!-- FOOTER INSTITUCIONAL -->
-    <footer class="text-center py-3 bg-white border-top text-muted small">
-        Mesa de Barrios Populares - La Rioja © 2026 | Sistema Comunitario de Registro de Adhesiones
+    <!-- MODAL DETALLE DE ADHESIÓN BARRIAL -->
+    <div id="detail-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-slate-200 max-h-[90vh] flex flex-col">
+            <div class="bg-purple-800 text-white p-4 flex items-center justify-between">
+                <h3 class="font-bold text-xs md:text-sm flex items-center gap-2">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    DETALLE COMPLETO DE ADHESIÓN BARRIAL
+                </h3>
+                <button onclick="closeDetailModal()" class="text-white/80 hover:text-white p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div id="modal-body" class="p-6 overflow-y-auto space-y-4 text-xs">
+                <!-- Contenido modal inyectado dinámicamente -->
+            </div>
+            <div class="bg-slate-50 px-6 py-3 border-t flex items-center justify-between">
+                <button onclick="printSingleAdhesion()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    <span>Imprimir Esta Nota</span>
+                </button>
+                <button onclick="closeDetailModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded-xl text-xs transition">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIE DE PÁGINA INSTITUCIONAL -->
+    <footer class="py-4 text-center text-xs text-slate-500 border-t border-slate-200 bg-white mt-auto no-print">
+        Mesa de Barrios Populares - La Rioja &copy; 2026 | Sistema Comunitario de Registro de Adhesiones
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/bootstrap.bundle.min.js"></script>
-
-    <!-- LÓGICA DE LA APLICACIÓN SPA & VÍNCULO GOOGLE APPS SCRIPT -->
-    <script>
+<script>
         // =========================================================================
         // CONFIGURACIÓN DE APPS SCRIPT Y ESTADO DE LA SPA
         // =========================================================================
