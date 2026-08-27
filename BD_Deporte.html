@@ -804,6 +804,42 @@
 
     <!-- LÓGICA DE LA APLICACIÓN SPA EN VANILLA JS -->
     <script>
+// Variable con la URL de tu despliegue en Google Apps Script
+const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzDcgfZMI8t6XjCZWtGUTsTXRab28j2Z_jxwTWPaSkqn30D0NmO7AymFiz5NosFZTaK/exec";
+
+// Función de envío modificada
+async function registrarAdhesion(payloadAdhesion) {
+  mostrarEstadoCarga(true); // Activa indicador visual de carga
+
+  try {
+    // Petición HTTP usando fetch a Apps Script
+    const response = await fetch(GAS_API_URL, {
+      method: "POST",
+      // Nota: 'mode: no-cors' o text/plain previene restricciones de CORS de Apps Script
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payloadAdhesion)
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
+      // Opcional: Respaldar en localStorage como caché secundario
+      saveLocalBackup(payloadAdhesion);
+      
+      // Desplegar pantalla de éxito
+      mostrarPantallaExito(result.id);
+    } else {
+      alert("Error al registrar en la nube: " + result.message);
+    }
+  } catch (error) {
+    console.error("Error en la conexión:", error);
+    alert("Hubo un problema de conexión. Guardando localmente en el dispositivo.");
+    saveLocalBackup(payloadAdhesion); // Fallback a LocalStorage si no hay conexión
+  } finally {
+    mostrarEstadoCarga(false);
+  }
+}
+        
         // ESTADO GLOBAL
         let isAdminLoggedIn = false;
         let currentSignatureMode = 'text';
